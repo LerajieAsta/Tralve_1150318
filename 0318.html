@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSC 榮耀號 6天5夜 九州賞櫻之旅</title>
+    <!-- 引入 Tailwind CSS 進行快速排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Font Awesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入 Google Fonts: Noto Sans TC (中文) & Noto Sans JP (日文) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sakura: {
+                            50: '#fff5f7',
+                            100: '#ffe4e9',
+                            200: '#fecdd6',
+                            300: '#fea3b4',
+                            500: '#f65a7f', // 主色
+                            700: '#be1841', // 深色文字
+                        },
+                        sea: {
+                            50: '#f0f9ff',
+                            600: '#0284c7',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', '"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fff5f7; /* 櫻花淺粉 */
+        }
+        /* 針對長輩閱讀優化的字體大小 */
+        .text-lg-plus {
+            font-size: 1.15rem;
+            line-height: 1.75rem;
+        }
+        .text-xl-plus {
+            font-size: 1.35rem;
+            line-height: 1.85rem;
+        }
+        /* 時間軸線條 */
+        .timeline-line {
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #fecdd6;
+            z-index: 0;
+        }
+        /* 隱藏捲軸但保留功能 */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Toast 通知動畫 */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+        .toast {
+            animation: fadeInOut 3s ease-in-out forwards;
+        }
+        /* Tab 激活樣式 */
+        .tab-active {
+            background-color: #f65a7f;
+            color: white;
+            font-weight: bold;
+            border-bottom: 4px solid #be1841;
+        }
+        .tab-inactive {
+            background-color: white;
+            color: #666;
+            border-bottom: 4px solid transparent;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-20">
+
+    <!-- 頂部 Hero 區域 -->
+    <header class="bg-gradient-to-r from-sakura-300 to-sakura-500 text-white p-6 shadow-md relative overflow-hidden">
+        <div class="relative z-10">
+            <h1 class="text-3xl font-bold mb-2"><i class="fa-solid fa-ship"></i> MSC 榮耀號．九州春旅</h1>
+            <p class="text-lg opacity-95">3月18日 - 3月23日 | 5人家族旅遊</p>
+            <div class="mt-4 bg-white/20 backdrop-blur-sm rounded-lg p-3 inline-block">
+                <p class="text-sm font-bold"><i class="fa-solid fa-triangle-exclamation"></i> 全程素食提醒 (Lacto-Ovo)</p>
+                <p class="text-xs">請隨身攜帶「素食需求日語卡」</p>
+            </div>
+        </div>
+        <!-- 裝飾花瓣 -->
+        <i class="fa-solid fa-fan absolute -right-4 -bottom-4 text-8xl text-white/20 rotate-12"></i>
+    </header>
+
+    <!-- 導航列 (Tabs) -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm overflow-x-auto hide-scrollbar whitespace-nowrap border-b border-sakura-200">
+        <div class="flex px-2 py-2 gap-2" id="tabs-container">
+            <!-- JS 會自動生成 Tabs -->
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <main class="container mx-auto px-4 py-6 max-w-3xl" id="content-container">
+        <!-- JS 會自動生成每一天的內容 -->
+    </main>
+
+    <!-- Toast 通知容器 -->
+    <div id="toast-container" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"></div>
+
+    <script>
+        // --- 資料設定 ---
+        const tripData = [
+            {
+                day: 1,
+                date: "3/18 (二)",
+                title: "啟程：基隆港",
+                location: "基隆",
+                highlights: "登船手續、救生演習、歡迎晚宴",
+                schedule: [
+                    {
+                        time: "下午 14:00",
+                        period: "下午",
+                        title: "抵達基隆港務大樓",
+                        desc: "前往基隆港東岸旅客中心辦理登船。請將大件行李交給托運人員（記得別上行李條）。",
+                        tips: "重要：請務必將護照、船票憑證隨身攜帶，不可放入托運行李。",
+                        japanese: null
+                    },
+                    {
+                        time: "下午 15:30",
+                        period: "下午",
+                        title: "登船與艙房整理",
+                        desc: "登船後先前往艙房確認行李，稍作休息。長輩可先換上舒適的鞋子。",
+                        tips: "建議下載 MSC for Me App 並連結船上 WiFi。",
+                        japanese: null
+                    },
+                    {
+                        time: "下午 17:00",
+                        period: "下午",
+                        title: "全員救生演習 (強制)",
+                        desc: "聽到廣播後，請攜帶房卡前往指定集合地點（Master Station）。必須全員刷卡報到才算完成。",
+                        tips: null,
+                        japanese: null
+                    },
+                    {
+                        time: "晚上 18:30",
+                        period: "晚間",
+                        title: "歡迎晚餐 (主餐廳)",
+                        desc: "前往主餐廳享用晚餐。服務生會提供菜單。",
+                        veg: "主餐廳菜單上標有 (V) 的為素食。今晚請務必跟服務生確認長輩的「蛋奶素」需求。",
+                        japanese: {
+                            kanji: "母は卵と乳製品は食べられますが、肉と魚は食べられません。",
+                            kana: "ははは たまごと にゅうせいひんは たべられますが、 にくと さかなは たべられません。",
+                            meaning: "家母可以吃蛋和奶製品，但不能吃肉和魚。"
+                        }
+                    }
+                ]
+            },
+            {
+                day: 2,
+                date: "3/19 (三)",
+                title: "海上巡航",
+                location: "公海",
+                highlights: "船長見面會、施華洛世奇水晶梯、下午茶",
+                schedule: [
+                    {
+                        time: "上午 09:00",
+                        period: "上午",
+                        title: "優雅早茶 & 散步",
+                        desc: "建議至 15 樓自助餐廳享用早餐，選擇靠窗位置看海。早餐後帶長輩至 5-7 樓中庭欣賞施華洛世奇水晶樓梯並拍照。",
+                        tips: "年輕人可去健身房或泳池，長輩可預約 SPA 按摩。",
+                        japanese: null
+                    },
+                    {
+                        time: "中午 12:00",
+                        period: "午餐",
+                        title: "午餐時光",
+                        desc: "可選擇自助餐廳 (Marketplace) 較為輕鬆，素食選項多（沙拉、義大利麵、比薩）。",
+                        veg: "自助餐區請留意湯品，有時蔬菜湯底可能含肉，建議詢問廚師。",
+                        japanese: {
+                            kanji: "このスープに肉エキスは入っていますか？",
+                            kana: "このすーぷに にくえきすは はいっていますか？",
+                            meaning: "請問這湯裡有肉類高湯嗎？"
+                        }
+                    },
+                    {
+                        time: "下午 14:30",
+                        period: "下午",
+                        title: "Jean-Philippe 巧克力工坊",
+                        desc: "位於 6 樓，適合帶長輩喝杯精緻下午茶（需自費），氣氛優雅。",
+                        tips: null,
+                        japanese: {
+                            kanji: "おすすめのデザートはどれですか？",
+                            kana: "おすすめの でざーとは どれですか？",
+                            meaning: "請問推薦的甜點是哪一個？"
+                        }
+                    },
+                    {
+                        time: "晚上 20:00",
+                        period: "晚間",
+                        title: "倫敦劇院表演",
+                        desc: "晚餐後前往劇院欣賞百老匯風格歌舞秀（建議提早 15 分鐘入場佔位）。",
+                        tips: "表演結束後可至 19 樓甲板看星空。",
+                        japanese: null
+                    }
+                ]
+            },
+            {
+                day: 3,
+                date: "3/20 (四)",
+                title: "福岡 (博多)",
+                location: "日本．福岡",
+                highlights: "太宰府天滿宮、天神地下街購物 (08:00-20:00)",
+                schedule: [
+                    {
+                        time: "上午 09:00",
+                        period: "上午",
+                        title: "太宰府天滿宮 (歷史/花賞)",
+                        desc: "避開海景，選擇日本重要文化財。參道上有許多商店，且有知名的星巴克概念店。此時可能還有晚開的梅花或早櫻。",
+                        tips: "搭乘 Uber 直接前往，不用轉地鐵。",
+                        address: "太宰府天満宮",
+                        fullAddress: "太宰府天満宮",
+                        japanese: {
+                            kanji: "太宰府天満宮の入り口までお願いします。",
+                            kana: "だざいふてんまんぐうの いりぐちまで おねがいします。",
+                            meaning: "請載我們到太宰府天滿宮的入口。"
+                        }
+                    },
+                    {
+                        time: "中午 12:30",
+                        period: "午餐",
+                        title: "午餐：天神商圈 (素食友善)",
+                        desc: "搭 Uber 回到天神市區。推薦 **「梅の花 (Ume no Hana)」** 豆腐料理，環境優雅適合長輩，且蛋奶素者可安心享用精緻懷石豆腐。",
+                        veg: "若不吃懷石，天神地下街也有多家烏龍麵或義式料理可選。",
+                        address: "梅の花 天神店",
+                        fullAddress: "福岡県福岡市中央区天神1-15-6",
+                        japanese: {
+                            kanji: "精進料理やベジタリアンメニューはありますか？",
+                            kana: "しょうじんりょうりや べじてりあんめにゅーは ありますか？",
+                            meaning: "請問有素食料理或菜單嗎？"
+                        }
+                    },
+                    {
+                        time: "下午 14:30",
+                        period: "下午",
+                        title: "天神百貨 & 地下街購物",
+                        desc: "兵分兩路但保持聯繫：<br>1. <b>長輩組</b>：福岡三越/大丸百貨 (好逛、有休息區)。<br>2. <b>年輕組</b>：Bic Camera 天神 2 號館 (電器) / 唐吉訶德。",
+                        tips: "請約定好 17:30 在某個明顯地標集合。",
+                        address: "福岡三越",
+                        fullAddress: "福岡三越",
+                        japanese: {
+                            kanji: "免税手続きはどこでできますか？",
+                            kana: "めんぜいてつづきは どこで できますか？",
+                            meaning: "請問哪裡可以辦理退稅？"
+                        }
+                    },
+                    {
+                        time: "晚上 18:00",
+                        period: "晚間",
+                        title: "返回郵輪",
+                        desc: "請預留塞車時間，務必在 19:00 前回到港口。使用 Uber 設定目的地。",
+                        address: "博多港中央ふ頭クルーズセンター",
+                        fullAddress: "博多港中央ふ頭クルーズセンター",
+                        japanese: {
+                            kanji: "急いでいます。高速道路を使ってください。",
+                            kana: "いそいでいます。 こうそくどうろを つかってください。",
+                            meaning: "我們趕時間，請走高速公路。"
+                        }
+                    }
+                ]
+            },
+            {
+                day: 4,
+                date: "3/21 (五)",
+                title: "佐世保",
+                location: "日本．佐世保",
+                highlights: "四町商店街、三浦町教會 (08:00-19:00)",
+                schedule: [
+                    {
+                        time: "上午 09:30",
+                        period: "上午",
+                        title: "三浦町教會 & 散步",
+                        desc: "下船後搭 Uber 短程前往。這是佐世保的地標，哥德式建築，非常適合拍照，沒有海風。",
+                        tips: "拍完照後，步行或短程車程至商店街。",
+                        address: "三浦町カトリック教会",
+                        fullAddress: "三浦町カトリック教会",
+                        japanese: {
+                            kanji: "ここで写真を撮ってもいいですか？",
+                            kana: "ここで しゃしんを とっても いいですか？",
+                            meaning: "請問可以在這裡拍照嗎？"
+                        }
+                    },
+                    {
+                        time: "上午 10:30",
+                        period: "上午",
+                        title: "佐世保四町商店街 (Saruku City)",
+                        desc: "日本最長的直線拱廊商店街，有屋頂不怕曬/雨。這裡有很多藥妝店、超市、服飾店，非常適合「輕鬆逛」。",
+                        tips: "長輩累了隨時有咖啡廳可休息。",
+                        address: "佐世保四ヶ町商店街",
+                        fullAddress: "佐世保四ヶ町商店街",
+                        japanese: {
+                            kanji: "この近くに薬局はありますか？",
+                            kana: "このちかくに やっきょくは ありますか？",
+                            meaning: "請問這附近有藥妝店嗎？"
+                        }
+                    },
+                    {
+                        time: "中午 12:30",
+                        period: "午餐",
+                        title: "午餐：商店街洋食或義式",
+                        desc: "佐世保漢堡多為肉類，建議選擇商店街內的義大利餐廳 (Pizzeria) 或日式定食店。",
+                        veg: "推薦點瑪格麗特披薩或蔬菜義大利麵。日式店可選天婦羅定食 (需確認沾醬非魚露) 或蛋丼。",
+                        address: "四ヶ町商店街のレストラン",
+                        fullAddress: "佐世保四ヶ町商店街",
+                        japanese: {
+                            kanji: "肉と魚を抜いてもらうことはできますか？",
+                            kana: "にくと さかなを ぬいてもらうことは できますか？",
+                            meaning: "請問可以把肉和魚拿掉嗎？"
+                        }
+                    },
+                    {
+                        time: "下午 15:00",
+                        period: "下午",
+                        title: "佐世保五番街 (Sasebo 5th Avenue)",
+                        desc: "位於港口附近的大型購物中心，有大型超市可做最後採買（零食、伴手禮）。",
+                        tips: "買完後可以直接走回船上或搭短程計程車，非常方便。",
+                        address: "させぼ五番街",
+                        fullAddress: "させぼ五番街",
+                        japanese: {
+                            kanji: "領収書をください。",
+                            kana: "りょうしゅうしょを ください。",
+                            meaning: "請給我收據。"
+                        }
+                    }
+                ]
+            },
+            {
+                day: 5,
+                date: "3/22 (六)",
+                title: "海上巡航",
+                location: "公海",
+                highlights: "船長之夜、免稅店、打包",
+                schedule: [
+                    {
+                        time: "上午 10:00",
+                        period: "上午",
+                        title: "免稅店最後衝刺",
+                        desc: "船上免稅店通常在這天會有特賣活動。適合買保養品或紀念品。",
+                        tips: null,
+                        japanese: null
+                    },
+                    {
+                        time: "下午 14:00",
+                        period: "下午",
+                        title: "打包行李 & 結帳",
+                        desc: "建議下午先整理大件行李。若有綁定信用卡則無需排隊結帳，若無則需至櫃檯結清。",
+                        tips: "行李需在午夜前放在房門口。",
+                        japanese: null
+                    },
+                    {
+                        time: "晚上 19:00",
+                        period: "晚間",
+                        title: "船長惜別晚宴 (Gala Night)",
+                        desc: "服裝建議稍微正式（長輩可穿洋裝，男士襯衫）。享用最後一頓豐盛晚餐。",
+                        veg: "再次確認素食主餐。",
+                        japanese: {
+                            kanji: "記念写真を撮っていただけますか？",
+                            kana: "きねんしゃしんを とって いただけますか？",
+                            meaning: "可以幫我們拍張合照嗎？"
+                        }
+                    }
+                ]
+            },
+            {
+                day: 6,
+                date: "3/23 (日)",
+                title: "抵達基隆",
+                location: "基隆",
+                highlights: "早餐、下船",
+                schedule: [
+                    {
+                        time: "上午 06:00",
+                        period: "上午",
+                        title: "抵達基隆港",
+                        desc: "船隻預計 06:00 靠港。",
+                        tips: null,
+                        japanese: null
+                    },
+                    {
+                        time: "上午 07:00",
+                        period: "早餐",
+                        title: "最後早餐",
+                        desc: "建議去自助餐廳用餐，時間比較彈性。吃飽後回房拿隨身行李。",
+                        tips: null,
+                        japanese: null
+                    },
+                    {
+                        time: "上午 08:30",
+                        period: "上午",
+                        title: "依序下船",
+                        desc: "依照廣播指示的顏色標籤批次下船。下船後領取托運行李，通過海關。",
+                        tips: "回家好好休息！",
+                        japanese: null
+                    }
+                ]
+            }
+        ];
+
+        // --- 功能函數 ---
+
+        function init() {
+            renderTabs();
+            switchTab(0);
+        }
+
+        // 渲染導航 Tabs
+        function renderTabs() {
+            const container = document.getElementById('tabs-container');
+            container.innerHTML = tripData.map((day, index) => `
+                <button 
+                    onclick="switchTab(${index})"
+                    id="tab-${index}"
+                    class="tab-inactive px-5 py-3 rounded-lg flex-shrink-0 transition-all duration-300 focus:outline-none"
+                >
+                    <div class="text-xs uppercase font-bold tracking-wider">Day ${day.day}</div>
+                    <div class="text-sm font-bold">${day.location}</div>
+                </button>
+            `).join('');
+        }
+
+        // 切換 Tab
+        function switchTab(index) {
+            // 更新 Tab 樣式
+            tripData.forEach((_, i) => {
+                const btn = document.getElementById(`tab-${i}`);
+                if (i === index) {
+                    btn.className = "tab-active px-6 py-3 rounded-lg flex-shrink-0 shadow-md transform scale-105 transition-all duration-300 focus:outline-none";
+                } else {
+                    btn.className = "tab-inactive px-5 py-3 rounded-lg flex-shrink-0 transition-all duration-300 focus:outline-none hover:bg-sakura-50";
+                }
+            });
+
+            // 渲染內容
+            renderContent(tripData[index]);
+            
+            // 捲動到頂部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 渲染單日內容
+        function renderContent(data) {
+            const container = document.getElementById('content-container');
+            
+            let html = `
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border-t-4 border-sakura-500 animate-fade-in">
+                    <div class="flex justify-between items-end mb-4 border-b border-gray-100 pb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-sakura-700">${data.title}</h2>
+                            <p class="text-gray-500 font-medium mt-1"><i class="fa-regular fa-calendar"></i> ${data.date}</p>
+                        </div>
+                        <span class="bg-sakura-100 text-sakura-700 px-3 py-1 rounded-full text-sm font-bold">Day ${data.day}</span>
+                    </div>
+                    <div class="text-gray-700 mb-2">
+                        <span class="font-bold text-sakura-500"><i class="fa-solid fa-star"></i> 今日重點：</span>
+                        ${data.highlights}
+                    </div>
+                </div>
+
+                <div class="relative pl-4 space-y-8">
+                    <div class="timeline-line"></div>
+            `;
+
+            data.schedule.forEach(item => {
+                html += `
+                    <div class="relative z-10 pl-6">
+                        <!-- 時間標記 -->
+                        <div class="absolute -left-2 top-0 bg-sakura-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                            ${item.period}
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-md p-5 border border-sakura-100 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">${item.title}</h3>
+                                <span class="text-sm text-gray-400 font-mono">${item.time}</span>
+                            </div>
+                            
+                            <p class="text-lg-plus text-gray-700 mb-3 leading-relaxed">
+                                ${item.desc}
+                            </p>
+
+                            <!-- 素食提示 -->
+                            ${item.veg ? `
+                                <div class="bg-green-50 border-l-4 border-green-500 p-3 mb-3 rounded-r">
+                                    <p class="text-green-800 font-bold text-lg"><i class="fa-solid fa-leaf"></i> 素食筆記</p>
+                                    <p class="text-green-700">${item.veg}</p>
+                                </div>
+                            ` : ''}
+
+                            <!-- 貼心提醒 -->
+                            ${item.tips ? `
+                                <div class="flex items-start gap-2 text-gray-500 text-base mb-3 bg-gray-50 p-2 rounded">
+                                    <i class="fa-solid fa-circle-info mt-1 text-sakura-500"></i>
+                                    <span>${item.tips}</span>
+                                </div>
+                            ` : ''}
+
+                            <!-- 地址卡片 (Uber 專用) -->
+                            ${item.fullAddress ? `
+                                <div class="bg-sea-50 border border-sea-200 rounded-lg p-3 mb-3">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs font-bold text-sea-600 uppercase">Uber 目的地設定</span>
+                                        <button onclick="copyToClipboard('${item.fullAddress}')" class="bg-sea-600 hover:bg-sea-700 text-white text-sm px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors shadow-sm">
+                                            <i class="fa-regular fa-copy"></i> 複製地址
+                                        </button>
+                                    </div>
+                                    <p class="text-xl font-bold text-gray-800 font-sans select-all bg-white p-2 rounded border border-gray-100">${item.fullAddress}</p>
+                                    ${item.address !== item.fullAddress ? `<p class="text-sm text-gray-500 mt-1">${item.address}</p>` : ''}
+                                </div>
+                            ` : ''}
+
+                            <!-- 日語小教室 (折疊式) -->
+                            ${item.japanese ? `
+                                <details class="group mt-2">
+                                    <summary class="list-none flex items-center gap-2 cursor-pointer bg-sakura-50 text-sakura-700 px-4 py-2 rounded-lg hover:bg-sakura-100 transition-colors font-bold select-none">
+                                        <i class="fa-solid fa-language text-xl"></i>
+                                        <span>實用日語 (點擊展開)</span>
+                                        <i class="fa-solid fa-chevron-down ml-auto group-open:rotate-180 transition-transform"></i>
+                                    </summary>
+                                    <div class="mt-2 p-4 bg-white border border-sakura-200 rounded-lg shadow-inner">
+                                        <p class="text-2xl font-bold text-gray-800 mb-1 leading-snug">${item.japanese.kanji}</p>
+                                        <p class="text-lg text-sakura-500 mb-2">${item.japanese.kana}</p>
+                                        <p class="text-base text-gray-500 border-t border-gray-100 pt-2 flex items-center gap-2">
+                                            <i class="fa-solid fa-share text-xs"></i> ${item.japanese.meaning}
+                                        </p>
+                                    </div>
+                                </details>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 底部通用提醒
+            if(data.day === 3 || data.day === 4) {
+                 html += `
+                    <div class="relative z-10 pl-6 mt-8">
+                        <div class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 shadow-sm">
+                            <h4 class="font-bold text-yellow-800 text-lg mb-2"><i class="fa-solid fa-taxi"></i> Uber 用車提醒</h4>
+                            <p class="text-gray-700">您們共有 5 人，日本一般的計程車 (Uber Taxi) 通常只能坐 4 人。</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700">
+                                <li>建議選擇 <strong>Uber Black Van</strong> (大車)。</li>
+                                <li>或是直接叫 <strong>2 台車</strong> 分批前往。</li>
+                            </ul>
+                        </div>
+                    </div>
+                 `;
+            }
+
+            html += `</div>`; // End timeline container
+            
+            // 加入頁尾留白
+            html += `<div class="h-12"></div>`;
+
+            container.innerHTML = html;
+        }
+
+        // 複製到剪貼簿功能
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`已複製：${text}`);
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                showToast(`已複製：${text}`);
+            });
+        }
+
+        // 顯示 Toast
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-2 mb-3';
+            toast.innerHTML = `<i class="fa-solid fa-check-circle text-green-400"></i> <span class="font-medium truncate max-w-xs">${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            // 動畫結束後移除 DOM
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // 啟動
+        window.onload = init;
+
+    </script>
+</body>
+</html>

@@ -1,649 +1,714 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSC 榮耀號 6天5夜 九州賞櫻之旅</title>
-    <!-- 引入 Tailwind CSS 進行快速排版 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Font Awesome 圖示 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 引入 Google Fonts: Noto Sans TC (中文) & Noto Sans JP (日文) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        sakura: {
-                            50: '#fff5f7',
-                            100: '#ffe4e9',
-                            200: '#fecdd6',
-                            300: '#fea3b4',
-                            500: '#f65a7f', // 主色
-                            700: '#be1841', // 深色文字
-                        },
-                        sea: {
-                            50: '#f0f9ff',
-                            600: '#0284c7',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans TC"', '"Noto Sans JP"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MSC 榮耀號：樂齡舒活之旅</title>
     <style>
+        /* --- 基礎設定 & 變數 --- */
+        :root {
+            --primary-color: #003366; /* MSC 海軍藍 */
+            --accent-color: #C5A065; /* 奢華金 */
+            --bg-color: #F9F7F2; /* 暖米色，護眼 */
+            --text-color: #333333; /* 深灰，易讀 */
+            --light-text: #ffffff;
+            --success-color: #4CAF50; /* 素食標示綠 */
+            --warning-color: #D32F2F; /* 警示紅 */
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            background-color: #fff5f7; /* 櫻花淺粉 */
+            font-family: "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8; /* 寬鬆行距 */
+            font-size: 18px; /* 預設大字體 */
+            padding-bottom: 80px; /* 避免內容被底部導航遮住 */
         }
-        /* 針對長輩閱讀優化的字體大小 */
-        .text-lg-plus {
-            font-size: 1.15rem;
-            line-height: 1.75rem;
-        }
-        .text-xl-plus {
-            font-size: 1.35rem;
-            line-height: 1.85rem;
-        }
-        /* 時間軸線條 */
-        .timeline-line {
-            position: absolute;
-            left: 1rem;
+
+        /* --- 頂部標題區 --- */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 20px;
+            text-align: center;
+            position: sticky;
             top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #fecdd6;
-            z-index: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        /* 隱藏捲軸但保留功能 */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        /* Toast 通知動畫 */
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(20px); }
-            10% { opacity: 1; transform: translateY(0); }
-            90% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-20px); }
-        }
-        .toast {
-            animation: fadeInOut 3s ease-in-out forwards;
-        }
-        /* Tab 激活樣式 */
-        .tab-active {
-            background-color: #f65a7f;
-            color: white;
+
+        h1 {
+            margin: 0;
+            font-size: 1.4rem;
             font-weight: bold;
-            border-bottom: 4px solid #be1841;
         }
-        .tab-inactive {
-            background-color: white;
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+
+        /* --- 導航列 (Tab) --- */
+        .nav-scroller {
+            background-color: #fff;
+            white-space: nowrap;
+            overflow-x: auto;
+            padding: 10px 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 76px; /* Header 高度 */
+            z-index: 999;
+            -webkit-overflow-scrolling: touch; /* iOS 滑動順暢 */
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            background-color: transparent;
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        /* --- 內容區塊 --- */
+        .container {
+            padding: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: none; /* 預設隱藏 */
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block; /* 啟用時顯示 */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 卡片設計 --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .card.warning {
+            border-left: 5px solid var(--warning-color);
+            background-color: #fff8f8;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        .card.warning h2 {
+            color: var(--warning-color);
+            border-bottom-color: var(--warning-color);
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- 特殊標籤 --- */
+        .tag-veg {
+            background-color: var(--success-color);
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .tag-easy {
+            background-color: #6c757d; /* 灰色 */
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .price-tag {
+            color: var(--warning-color);
+            font-weight: bold;
+            font-family: monospace;
+            background: #ffebee;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* --- 表格樣式 (交通比較) --- */
+        .transport-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .transport-table th, .transport-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .transport-table th {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .transport-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* --- 強調文字 --- */
+        .highlight {
+            color: #d9534f;
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        /* --- 頁尾 --- */
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
             color: #666;
-            border-bottom: 4px solid transparent;
+            margin-top: 30px;
+            padding-bottom: 20px;
+        }
+
+        /* --- 回到頂部按鈕 --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-decoration: none;
+            font-size: 20px;
+            z-index: 1001;
         }
     </style>
 </head>
-<body class="text-gray-800 antialiased pb-20">
+<body>
 
-    <!-- 頂部 Hero 區域 -->
-    <header class="bg-gradient-to-r from-sakura-300 to-sakura-500 text-white p-6 shadow-md relative overflow-hidden">
-        <div class="relative z-10">
-            <h1 class="text-3xl font-bold mb-2"><i class="fa-solid fa-ship"></i> MSC 榮耀號．九州春旅</h1>
-            <p class="text-lg opacity-95">3月18日 - 3月23日 | 5人家族旅遊</p>
-            <div class="mt-4 bg-white/20 backdrop-blur-sm rounded-lg p-3 inline-block">
-                <p class="text-sm font-bold"><i class="fa-solid fa-triangle-exclamation"></i> 全程素食提醒 (Lacto-Ovo)</p>
-                <p class="text-xs">請隨身攜帶「素食需求日語卡」</p>
+<header>
+    <h1>MSC 榮耀號：舒活之旅</h1>
+    <div class="subtitle">2026/3/18 - 3/23 (六天五夜)</div>
+</header>
+
+<!-- 導航列 -->
+<div class="nav-scroller">
+    <button class="nav-btn active" onclick="showSection('overview')">總覽</button>
+    <button class="nav-btn" onclick="showSection('pricing')">💰 消費參考</button>
+    <button class="nav-btn" onclick="showSection('day1')">Day 1</button>
+    <button class="nav-btn" onclick="showSection('day2')">Day 2</button>
+    <button class="nav-btn" onclick="showSection('day3')">Day 3 (福岡)</button>
+    <button class="nav-btn" onclick="showSection('day4')">Day 4 (佐世保)</button>
+    <button class="nav-btn" onclick="showSection('day5')">Day 5</button>
+    <button class="nav-btn" onclick="showSection('day6')">Day 6</button>
+    <button class="nav-btn" onclick="showSection('prep')">行前準備</button>
+</div>
+
+<div class="container">
+
+    <!-- 總覽 Section -->
+    <div id="overview" class="section active">
+        <div class="card warning">
+            <h2>⚠️ 重要：船上是美金！</h2>
+            <p><strong>請注意：</strong> 船上所有標價都是 <strong>美金 (USD)</strong>。</p>
+            <ul>
+                <li>看到 $10 不是 10 元台幣，大約是 <strong>320 元台幣</strong>。</li>
+                <li><strong>簡單算法：</strong> 看到數字，心裡直接 <strong>乘以 32</strong>。</li>
+                <li>船上消費會加收 15% 服務費，直接記在房卡帳單，不用付現金。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🚢 行程重點</h2>
+            <p>這是一趟專為家人設計的慢活旅程，主打<strong>「不趕路、睡到飽、吃得好」</strong>。</p>
+            <ul>
+                <li><strong>船名：</strong> MSC Bellissima 榮耀號</li>
+                <li><strong>日期：</strong> 3/18 (三) - 3/23 (一)</li>
+                <li><strong>核心精神：</strong> 累了就休息，餓了就吃，風景自在看。</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>🥗 素食者貼心提醒</h2>
+            <p>船上對於飲食限制非常友善，請放心。</p>
+            <ul>
+                <li><strong>主餐廳 (5/6樓)：</strong> 每日菜單皆有標示 <span class="tag-veg">V (Vegetarian)</span> 的選項。第一餐請務必告知服務生 "Vegetarian" (素食)，他們會特別註記。</li>
+                <li><strong>市集自助餐廳 (15樓)：</strong> 設有蔬食區、Pizza區、沙拉吧與水果區，選擇最豐富。</li>
+                <li><strong>植物奶：</strong> 船上咖啡廳通常提供豆奶或燕麥奶（可能需額外付費或包含在飲品套餐中）。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 消費參考 Section -->
+    <div id="pricing" class="section">
+        <div class="card">
+            <h2>💰 必備與基本開銷</h2>
+            <p>這是不花額外錢也會產生的基本費用。記得 <strong>x 32</strong> 換算台幣。</p>
+            <table class="transport-table">
+                <tr>
+                    <th style="width: 40%;">項目</th>
+                    <th>預估價格 (USD)</th>
+                </tr>
+                <tr>
+                    <td><strong>每日服務費 (小費)</strong><br><span style="font-size:0.8rem; color:#666;">每人每晚自動扣款。</span></td>
+                    <td><span class="price-tag">$16 ~ $18</span> /晚<br><span style="font-size:0.85rem; color:#555;">(約 NT$510 ~ $580)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Wi-Fi 網路</strong><br><span style="font-size:0.8rem; color:#666;">1個裝置，僅瀏覽網頁/Line。</span></td>
+                    <td><span class="price-tag">$12 ~ $15</span> /天<br><span style="font-size:0.85rem; color:#555;">(約 NT$390 ~ $480)</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>🍽️ 餐飲與飲料 (額外消費)</h2>
+            <p>主餐廳與自助餐廳是<strong>免費</strong>的。以下是「付費特色餐廳」與「單點飲料」參考：</p>
+            
+            <table class="transport-table">
+                 <tr>
+                    <th colspan="2" style="background-color: #f0f0f0; color: #333; text-align: center;">特色餐廳 (按人頭/套餐計費)</th>
+                </tr>
+                <tr>
+                    <td><strong>美式牛排屋 (Butcher's Cut)</strong></td>
+                    <td>套餐約 <span class="price-tag">$39 ~ $59</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$1,250 ~ $1,900)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>海渡鐵板燒 (Kaito Teppanyaki)</strong></td>
+                    <td>套餐約 <span class="price-tag">$30 ~ $60</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$960 ~ $1,920)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Hola! Tacos (墨西哥料理)</strong></td>
+                    <td>吃到飽約 <span class="price-tag">$18</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$580)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>海中閣火鍋 (Sea Pavilion)</strong></td>
+                    <td>套餐約 <span class="price-tag">$35</span> 起<br><span style="font-size:0.85rem; color:#555;">(約 NT$1,120)</span></td>
+                </tr>
+
+                <tr>
+                    <th colspan="2" style="background-color: #f0f0f0; color: #333; text-align: center;">飲料與點心 (需另加 15% 服務費)</th>
+                </tr>
+                <tr>
+                    <td><strong>礦泉水 (大瓶 1L)</strong></td>
+                    <td><span class="price-tag">$3.5 ~ $4.5</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$115 ~ $145)</span></td>
+                </tr>
+                 <tr>
+                    <td><strong>罐裝汽水 (可樂/雪碧)</strong></td>
+                    <td><span class="price-tag">$3.5</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$115)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>啤酒 / 紅白酒(杯)</strong></td>
+                    <td><span class="price-tag">$7 ~ $10</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$225 ~ $320)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>調酒 (雞尾酒)</strong></td>
+                    <td><span class="price-tag">$10 ~ $14</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$320 ~ $450)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>義式冰淇淋 (Gelato)</strong></td>
+                    <td><span class="price-tag">$4 ~ $6</span> /球<br><span style="font-size:0.85rem; color:#555;">(約 NT$130 ~ $190)</span></td>
+                </tr>
+                 <tr>
+                    <td><strong>Jean-Philippe 精品熱巧克力</strong></td>
+                    <td><span class="price-tag">$5 ~ $8</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$160 ~ $260)</span></td>
+                </tr>
+            </table>
+            <div class="tip-box">
+                <strong>省錢小撇步：</strong> 船上的自助餐廳全天候提供<strong>免費</strong>的飲用水、熱水與茶包（早餐時段有美式咖啡）。若非必要，不需要一直買瓶裝水，可帶保溫瓶去裝水回房喝。
             </div>
         </div>
-        <!-- 裝飾花瓣 -->
-        <i class="fa-solid fa-fan absolute -right-4 -bottom-4 text-8xl text-white/20 rotate-12"></i>
-    </header>
 
-    <!-- 導航列 (Tabs) -->
-    <nav class="sticky top-0 z-50 bg-white shadow-sm overflow-x-auto hide-scrollbar whitespace-nowrap border-b border-sakura-200">
-        <div class="flex px-2 py-2 gap-2" id="tabs-container">
-            <!-- JS 會自動生成 Tabs -->
+        <div class="card">
+            <h2>🎮 娛樂設施費用</h2>
+            <p>除了泳池、健身房、大劇院秀免費外，部分設施需付費：</p>
+            <ul>
+                <li><strong>F1 賽車模擬器：</strong> 約 <span class="price-tag">$12</span> /次<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$390)</span></li>
+                <li><strong>VR 虛擬迷宮：</strong> 約 <span class="price-tag">$10</span> /次<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$320)</span></li>
+                <li><strong>保齡球：</strong> 約 <span class="price-tag">$30</span> /半小時<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$960)</span></li>
+                <li><strong>XD 互動影院：</strong> 約 <span class="price-tag">$10</span> /次<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$320)</span></li>
+            </ul>
+            <div class="tip-box">
+                <strong>省錢小撇步：</strong> 船上有販售「娛樂通票 (Fun Pass)」，若想玩多項設施，買通票會比較划算。
+            </div>
         </div>
-    </nav>
+    </div>
 
-    <!-- 主要內容區 -->
-    <main class="container mx-auto px-4 py-6 max-w-3xl" id="content-container">
-        <!-- JS 會自動生成每一天的內容 -->
-    </main>
+    <!-- Day 1 Section -->
+    <div id="day1" class="section">
+        <div class="card">
+            <h3>Day 1：基隆登船與啟航 <span class="tag-easy">輕鬆</span></h3>
+            <p><strong>行程：</strong> 基隆港務大樓報到 ➔ 登船 ➔ 18:00 啟航</p>
+            <hr>
+            <h4>👴 建議路線：</h4>
+            <ol>
+                <li><strong>14:00 左右抵達基隆港：</strong> 避開中午最擁擠的人潮，把行李交給托運人員。</li>
+                <li><strong>登船後直奔 15 樓自助餐廳：</strong> 先坐下來喝杯熱茶、吃點下午茶（此時房間可能還沒整理好）。</li>
+                <li><strong>16:00 進房休息：</strong> 檢查行李是否送達。</li>
+                <li><strong>17:00 安全演習：</strong> 這是強制參加的，現在通常只需看電視教學影片，然後去指定集合點刷房卡即可（不用穿救生衣排隊）。</li>
+                <li><strong>18:00 甲板看啟航：</strong> 建議在陽台房間看，或去 15 樓船尾，避免風大。</li>
+            </ol>
+            
+            <div class="tip-box">
+                <strong>晚餐推薦：</strong> 建議第一晚去<strong>主餐廳 (Main Dining Room)</strong> 享用點餐式晚餐，環境較安靜，適合適應船上搖晃（雖然很大很穩）。
+                <br><br>
+                <span class="tag-veg">素食</span> 記得跟服務生確認 "No meat, No seafood, Eggs/Milk OK"。
+            </div>
+        </div>
+    </div>
 
-    <!-- Toast 通知容器 -->
-    <div id="toast-container" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"></div>
+    <!-- Day 2 Section -->
+    <div id="day2" class="section">
+        <div class="card">
+            <h3>Day 2：海上巡航 <span class="tag-easy">慢活</span></h3>
+            <p>全日於海上，沒有Morning Call的一天。</p>
+            <hr>
+            <h4>✨ 推薦活動 (少走路)：</h4>
+            <ul>
+                <li><strong>上午 - 榮耀大道 (6樓)：</strong> 抬頭欣賞 80 米長的 LED 天幕秀，每小時有不同的視覺主題，坐著看就很美。</li>
+                <li><strong>下午 - 倫敦大劇院 (6樓)：</strong> 觀賞百老匯等級的歌舞秀（需透過 App 或螢幕預約），坐著吹冷氣看表演最舒適。</li>
+                <li><strong>傍晚 - Sky Lounge (18樓)：</strong> 視野極佳的景觀酒廊，適合看海發呆，人潮通常比泳池畔少很多。</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>🍽️ 今日餐飲建議</h2>
+            <p><strong>早餐：</strong> 建議去主餐廳吃「點餐式早餐」，不用自己端盤子走來走去，這對膝蓋最友善。</p>
+            <p><strong>午餐/下午茶：</strong> 15樓市集自助餐廳。特別推薦剛出爐的 Pizza（有素食瑪格麗特口味）。</p>
+        </div>
+    </div>
 
-    <script>
-        // --- 資料設定 ---
-        const tripData = [
-            {
-                day: 1,
-                date: "3/18 (二)",
-                title: "啟程：基隆港",
-                location: "基隆",
-                highlights: "登船手續、救生演習、歡迎晚宴",
-                schedule: [
-                    {
-                        time: "下午 14:00",
-                        period: "下午",
-                        title: "抵達基隆港務大樓",
-                        desc: "前往基隆港東岸旅客中心辦理登船。請將大件行李交給托運人員（記得別上行李條）。",
-                        tips: "重要：請務必將護照、船票憑證隨身攜帶，不可放入托運行李。",
-                        japanese: null
-                    },
-                    {
-                        time: "下午 15:30",
-                        period: "下午",
-                        title: "登船與艙房整理",
-                        desc: "登船後先前往艙房確認行李，稍作休息。長輩可先換上舒適的鞋子。",
-                        tips: "建議下載 MSC for Me App 並連結船上 WiFi。",
-                        japanese: null
-                    },
-                    {
-                        time: "下午 17:00",
-                        period: "下午",
-                        title: "全員救生演習 (強制)",
-                        desc: "聽到廣播後，請攜帶房卡前往指定集合地點（Master Station）。必須全員刷卡報到才算完成。",
-                        tips: null,
-                        japanese: null
-                    },
-                    {
-                        time: "晚上 18:30",
-                        period: "晚間",
-                        title: "歡迎晚餐 (主餐廳)",
-                        desc: "前往主餐廳享用晚餐。服務生會提供菜單。",
-                        veg: "主餐廳菜單上標有 (V) 的為素食。今晚請務必跟服務生確認長輩的「蛋奶素」需求。",
-                        japanese: {
-                            kanji: "母は卵と乳製品は食べられますが、肉と魚は食べられません。",
-                            kana: "ははは たまごと にゅうせいひんは たべられますが、 にくと さかなは たべられません。",
-                            meaning: "家母可以吃蛋和奶製品，但不能吃肉和魚。"
-                        }
-                    }
-                ]
-            },
-            {
-                day: 2,
-                date: "3/19 (三)",
-                title: "海上巡航",
-                location: "公海",
-                highlights: "船長見面會、施華洛世奇水晶梯、下午茶",
-                schedule: [
-                    {
-                        time: "上午 09:00",
-                        period: "上午",
-                        title: "優雅早茶 & 散步",
-                        desc: "建議至 15 樓自助餐廳享用早餐，選擇靠窗位置看海。早餐後帶長輩至 5-7 樓中庭欣賞施華洛世奇水晶樓梯並拍照。",
-                        tips: "年輕人可去健身房或泳池，長輩可預約 SPA 按摩。",
-                        japanese: null
-                    },
-                    {
-                        time: "中午 12:00",
-                        period: "午餐",
-                        title: "午餐時光",
-                        desc: "可選擇自助餐廳 (Marketplace) 較為輕鬆，素食選項多（沙拉、義大利麵、比薩）。",
-                        veg: "自助餐區請留意湯品，有時蔬菜湯底可能含肉，建議詢問廚師。",
-                        japanese: {
-                            kanji: "このスープに肉エキスは入っていますか？",
-                            kana: "このすーぷに にくえきすは はいっていますか？",
-                            meaning: "請問這湯裡有肉類高湯嗎？"
-                        }
-                    },
-                    {
-                        time: "下午 14:30",
-                        period: "下午",
-                        title: "Jean-Philippe 巧克力工坊",
-                        desc: "位於 6 樓，適合帶長輩喝杯精緻下午茶（需自費），氣氛優雅。",
-                        tips: null,
-                        japanese: {
-                            kanji: "おすすめのデザートはどれですか？",
-                            kana: "おすすめの でざーとは どれですか？",
-                            meaning: "請問推薦的甜點是哪一個？"
-                        }
-                    },
-                    {
-                        time: "晚上 20:00",
-                        period: "晚間",
-                        title: "倫敦劇院表演",
-                        desc: "晚餐後前往劇院欣賞百老匯風格歌舞秀（建議提早 15 分鐘入場佔位）。",
-                        tips: "表演結束後可至 19 樓甲板看星空。",
-                        japanese: null
-                    }
-                ]
-            },
-            {
-                day: 3,
-                date: "3/20 (四)",
-                title: "福岡 (博多)",
-                location: "日本．福岡",
-                highlights: "太宰府天滿宮、天神地下街購物 (08:00-20:00)",
-                schedule: [
-                    {
-                        time: "上午 09:00",
-                        period: "上午",
-                        title: "太宰府天滿宮 (歷史/花賞)",
-                        travelInfo: "預計車程：約 35-40 分鐘 (Uber)",
-                        desc: "避開海景，選擇日本重要文化財。參道上有許多商店，且有知名的星巴克概念店。此時可能還有晚開的梅花或早櫻。",
-                        tips: "搭乘 Uber 直接前往，不用轉地鐵。",
-                        address: "太宰府天満宮",
-                        fullAddress: "太宰府天満宮",
-                        japanese: {
-                            kanji: "太宰府天満宮の入り口までお願いします。",
-                            kana: "だざいふてんまんぐうの いりぐちまで おねがいします。",
-                            meaning: "請載我們到太宰府天滿宮的入口。"
-                        }
-                    },
-                    {
-                        time: "中午 12:30",
-                        period: "午餐",
-                        title: "午餐：天神商圈 (素食友善)",
-                        travelInfo: "預計車程：約 35-40 分鐘 (返回市區)",
-                        desc: "搭 Uber 回到天神市區。推薦 **「梅の花 (Ume no Hana)」** 豆腐料理，環境優雅適合長輩，且蛋奶素者可安心享用精緻懷石豆腐。",
-                        veg: "若不吃懷石，天神地下街也有多家烏龍麵或義式料理可選。",
-                        address: "梅の花 天神店",
-                        fullAddress: "福岡県福岡市中央区天神1-15-6",
-                        japanese: {
-                            kanji: "精進料理やベジタリアンメニューはありますか？",
-                            kana: "しょうじんりょうりや べじてりあんめにゅーは ありますか？",
-                            meaning: "請問有素食料理或菜單嗎？"
-                        }
-                    },
-                    {
-                        time: "下午 14:30",
-                        period: "下午",
-                        title: "天神百貨 & 地下街購物",
-                        travelInfo: "步行範圍內",
-                        desc: "兵分兩路但保持聯繫：<br>1. <b>長輩組</b>：福岡三越/大丸百貨 (好逛、有休息區)。<br>2. <b>年輕組</b>：Bic Camera 天神 2 號館 (電器) / 唐吉訶德。",
-                        tips: "請約定好 17:30 在某個明顯地標集合。",
-                        address: "福岡三越",
-                        fullAddress: "福岡三越",
-                        japanese: {
-                            kanji: "免税手続きはどこでできますか？",
-                            kana: "めんぜいてつづきは どこで できますか？",
-                            meaning: "請問哪裡可以辦理退稅？"
-                        }
-                    },
-                    {
-                        time: "晚上 18:00",
-                        period: "晚間",
-                        title: "返回郵輪",
-                        travelInfo: "預計車程：約 15-20 分鐘",
-                        desc: "請預留塞車時間，務必在 19:00 前回到港口。使用 Uber 設定目的地。",
-                        address: "博多港中央ふ頭クルーズセンター",
-                        fullAddress: "博多港中央ふ頭クルーズセンター",
-                        japanese: {
-                            kanji: "急いでいます。高速道路を使ってください。",
-                            kana: "いそいでいます。 こうそくどうろを つかってください。",
-                            meaning: "我們趕時間，請走高速公路。"
-                        }
-                    }
-                ]
-            },
-            {
-                day: 4,
-                date: "3/21 (五)",
-                title: "佐世保",
-                location: "日本．佐世保",
-                highlights: "四町商店街、(三浦町教會 或 龜山八幡宮 擇一)",
-                schedule: [
-                    {
-                        time: "上午 09:30",
-                        period: "方案A",
-                        title: "【二選一】三浦町教會 (西式建築美拍)",
-                        travelInfo: "預計車程：約 5-8 分鐘 (Uber)",
-                        desc: "下船後搭 Uber 短程前往。佐世保的地標，哥德式建築非常莊嚴美麗。<b>適合喜歡拍照、欣賞建築風格的人。</b>（與龜山八幡宮擇一即可，以免太趕）",
-                        tips: "拍完照後，步行或短程車程至商店街。",
-                        address: "三浦町カトリック教会",
-                        fullAddress: "三浦町カトリック教会",
-                        japanese: {
-                            kanji: "ここで写真を撮ってもいいですか？",
-                            kana: "ここで しゃしんを とっても いいですか？",
-                            meaning: "請問可以在這裡拍照嗎？"
-                        }
-                    },
-                    {
-                        time: "上午 09:30",
-                        period: "方案B",
-                        title: "【二選一】龜山八幡宮 (日式長壽祈福)",
-                        travelInfo: "預計車程：約 8-10 分鐘 (Uber)",
-                        desc: "<b>適合喜歡日式氛圍、想幫長輩祈求健康的人。</b>這裡以「烏龜」為吉祥物，象徵長壽，境內有許多可愛的烏龜石像。",
-                        tips: "距離商店街步行約 5-10 分鐘，參拜完可直接去逛街。",
-                        address: "亀山八幡宮",
-                        fullAddress: "長崎県佐世保市八幡町3-3",
-                        japanese: {
-                            kanji: "健康長寿のお守りはありますか？",
-                            kana: "けんこうちょうじゅの おまもりは ありますか？",
-                            meaning: "請問有健康長壽的御守嗎？"
-                        }
-                    },
-                    {
-                        time: "上午 10:30",
-                        period: "上午",
-                        title: "佐世保四町商店街 (Saruku City)",
-                        travelInfo: "從景點步行約 5-10 分鐘",
-                        desc: "日本最長的直線拱廊商店街，有屋頂不怕曬/雨。這裡有很多藥妝店、超市、服飾店，非常適合「輕鬆逛」。",
-                        tips: "長輩累了隨時有咖啡廳可休息。",
-                        address: "佐世保四ヶ町商店街",
-                        fullAddress: "佐世保四ヶ町商店街",
-                        japanese: {
-                            kanji: "この近くに薬局はありますか？",
-                            kana: "このちかくに やっきょくは ありますか？",
-                            meaning: "請問這附近有藥妝店嗎？"
-                        }
-                    },
-                    {
-                        time: "中午 12:30",
-                        period: "午餐",
-                        title: "午餐：商店街洋食或義式",
-                        travelInfo: "商店街內步行",
-                        desc: "佐世保漢堡多為肉類，建議選擇商店街內的義大利餐廳 (Pizzeria) 或日式定食店。",
-                        veg: "推薦點瑪格麗特披薩或蔬菜義大利麵。日式店可選天婦羅定食 (需確認沾醬非魚露) 或蛋丼。",
-                        address: "四ヶ町商店街のレストラン",
-                        fullAddress: "佐世保四ヶ町商店街",
-                        japanese: {
-                            kanji: "肉と魚を抜いてもらうことはできますか？",
-                            kana: "にくと さかなを ぬいてもらうことは できますか？",
-                            meaning: "請問可以把肉和魚拿掉嗎？"
-                        }
-                    },
-                    {
-                        time: "下午 15:00",
-                        period: "下午",
-                        title: "佐世保五番街 (Sasebo 5th Avenue)",
-                        travelInfo: "步行約 10-15 分鐘 (可搭短程車)",
-                        desc: "位於港口附近的大型購物中心，有大型超市可做最後採買（零食、伴手禮）。",
-                        tips: "買完後可以直接走回船上或搭短程計程車，非常方便。",
-                        address: "させぼ五番街",
-                        fullAddress: "させぼ五番街",
-                        japanese: {
-                            kanji: "領収書をください。",
-                            kana: "りょうしゅうしょを ください。",
-                            meaning: "請給我收據。"
-                        }
-                    }
-                ]
-            },
-            {
-                day: 5,
-                date: "3/22 (六)",
-                title: "海上巡航",
-                location: "公海",
-                highlights: "船長之夜、免稅店、打包",
-                schedule: [
-                    {
-                        time: "上午 10:00",
-                        period: "上午",
-                        title: "免稅店最後衝刺",
-                        desc: "船上免稅店通常在這天會有特賣活動。適合買保養品或紀念品。",
-                        tips: null,
-                        japanese: null
-                    },
-                    {
-                        time: "下午 14:00",
-                        period: "下午",
-                        title: "打包行李 & 結帳",
-                        desc: "建議下午先整理大件行李。若有綁定信用卡則無需排隊結帳，若無則需至櫃檯結清。",
-                        tips: "行李需在午夜前放在房門口。",
-                        japanese: null
-                    },
-                    {
-                        time: "晚上 19:00",
-                        period: "晚間",
-                        title: "船長惜別晚宴 (Gala Night)",
-                        desc: "服裝建議稍微正式（長輩可穿洋裝，男士襯衫）。享用最後一頓豐盛晚餐。",
-                        veg: "再次確認素食主餐。",
-                        japanese: {
-                            kanji: "記念写真を撮っていただけますか？",
-                            kana: "きねんしゃしんを とって いただけますか？",
-                            meaning: "可以幫我們拍張合照嗎？"
-                        }
-                    }
-                ]
-            },
-            {
-                day: 6,
-                date: "3/23 (日)",
-                title: "抵達基隆",
-                location: "基隆",
-                highlights: "早餐、下船",
-                schedule: [
-                    {
-                        time: "上午 06:00",
-                        period: "上午",
-                        title: "抵達基隆港",
-                        desc: "船隻預計 06:00 靠港。",
-                        tips: null,
-                        japanese: null
-                    },
-                    {
-                        time: "上午 07:00",
-                        period: "早餐",
-                        title: "最後早餐",
-                        desc: "建議去自助餐廳用餐，時間比較彈性。吃飽後回房拿隨身行李。",
-                        tips: null,
-                        japanese: null
-                    },
-                    {
-                        time: "上午 08:30",
-                        period: "上午",
-                        title: "依序下船",
-                        desc: "依照廣播指示的顏色標籤批次下船。下船後領取托運行李，通過海關。",
-                        tips: "回家好好休息！",
-                        japanese: null
-                    }
-                ]
+    <!-- Day 3 Section (Fukuoka) -->
+    <div id="day3" class="section">
+        <div class="card">
+            <h3>Day 3：福岡 (08:00-20:00)</h3>
+            <p><strong>策略：</strong> 計程車代步，定點深度遊。</p>
+            
+            <div class="tip-box">
+                <strong>交通提示：</strong> 福岡博多港離市區很近，計程車費不貴，強烈建議<strong>全程計程車</strong>，省去上下公車的辛苦。
+            </div>
+        </div>
+
+        <div class="card">
+            <h4>方案 A：櫛田神社 + 川端商店街 (經典輕鬆)</h4>
+            <p>博多總鎮守，平地無階梯，旁邊就是有頂棚的商店街。</p>
+            <ul>
+                <li><strong>適合：</strong> 喜歡看日本傳統文化、買土產。</li>
+                <li><span class="tag-veg">素食推薦</span> <strong>Evah Dining (Macrobiotic)</strong>：位於博多 Riverain 購物中心（就在商店街尾端），提供精緻日式素食便當/套餐。</li>
+            </ul>
+            <table class="transport-table">
+                <tr>
+                    <th>項目</th>
+                    <th>計程車 (單程/一台車)</th>
+                    <th>公車/地鐵</th>
+                </tr>
+                <tr>
+                    <td>車資預估</td>
+                    <td>約 ¥1,500 - ¥2,000</td>
+                    <td>約 ¥250/人</td>
+                </tr>
+                <tr>
+                    <td>時間</td>
+                    <td>15 分鐘</td>
+                    <td>30 分鐘 (含等車)</td>
+                </tr>
+                <tr>
+                    <td>步行疲勞度</td>
+                    <td>⭐ (極低)</td>
+                    <td>⭐⭐⭐ (中)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h4>方案 B：大濠公園 + 日本庭園 (風景優美)</h4>
+            <p>福岡的都市綠洲，有非常漂亮的湖景和日式庭園，步道平坦。</p>
+            <ul>
+                <li><strong>適合：</strong> 喜歡自然風景、安靜散步。</li>
+                <li><span class="tag-veg">素食推薦</span> 公園內有 <strong>Royal Garden Cafe</strong>，通常有義大利麵或烤蔬菜選項 (需確認有無高湯)，環境極佳。</li>
+            </ul>
+            <table class="transport-table">
+                <tr>
+                    <th>項目</th>
+                    <th>計程車 (單程/一台車)</th>
+                    <th>公車/地鐵</th>
+                </tr>
+                <tr>
+                    <td>車資預估</td>
+                    <td>約 ¥2,500 - ¥3,000</td>
+                    <td>需轉乘，不建議</td>
+                </tr>
+                <tr>
+                    <td>時間</td>
+                    <td>20-25 分鐘</td>
+                    <td>45 分鐘+</td>
+                </tr>
+                 <tr>
+                    <td>步行疲勞度</td>
+                    <td>⭐ (低)</td>
+                    <td>⭐⭐⭐⭐ (高)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h4>方案 C：Lalaport 福岡 (購物冷氣團)</h4>
+            <p>有 1:1 實體鋼彈立像，室內全冷氣，有大量椅子可休息。</p>
+            <ul>
+                <li><strong>適合：</strong> 怕熱、怕冷、純購物、看鋼彈。</li>
+                <li><span class="tag-veg">素食推薦</span> 美食街選擇多，找<strong>印度咖哩</strong>或<strong>KuaAina漢堡</strong> (確認是否有非肉類選項) 較容易。</li>
+            </ul>
+             <table class="transport-table">
+                <tr>
+                    <th>項目</th>
+                    <th>計程車 (單程/一台車)</th>
+                    <th>公車</th>
+                </tr>
+                <tr>
+                    <td>車資預估</td>
+                    <td>約 ¥3,000</td>
+                    <td>直達公車排隊長</td>
+                </tr>
+                 <tr>
+                    <td>步行疲勞度</td>
+                    <td>⭐ (極低)</td>
+                    <td>⭐⭐ (排隊累)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Day 4 Section (Sasebo) -->
+    <div id="day4" class="section">
+        <div class="card">
+            <h3>Day 4：佐世保 (08:00-19:00)</h3>
+            <p><strong>策略：</strong> 佐世保地形多山，港口就在市區旁。</p>
+        </div>
+
+        <div class="card">
+            <h4>方案 A：九十九島珍珠海洋遊覽區 (最推)</h4>
+            <p>搭乘「珍珠皇后號」遊覽船，在船上坐著看風景，完全不累。</p>
+            <ul>
+                <li><strong>適合：</strong> 全家大小，極度輕鬆。</li>
+                <li><span class="tag-veg">素食推薦</span> 該區域餐廳以海鮮為主。建議在附近的義式餐廳找瑪格麗特披薩，或選擇 <strong>Mos Burger</strong> (通常有大豆漢堡排，需確認醬汁)。</li>
+            </ul>
+             <table class="transport-table">
+                <tr>
+                    <th>項目</th>
+                    <th>計程車 (單程/一台車)</th>
+                    <th>公車</th>
+                </tr>
+                <tr>
+                    <td>車資預估</td>
+                    <td>約 ¥1,800 - ¥2,200</td>
+                    <td>約 ¥260/人</td>
+                </tr>
+                <tr>
+                    <td>時間</td>
+                    <td>15-20 分鐘</td>
+                    <td>25-30 分鐘</td>
+                </tr>
+                <tr>
+                    <td>步行疲勞度</td>
+                    <td>⭐ (極低)</td>
+                    <td>⭐⭐ (中)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h4>方案 B：佐世保四翠 (商店街漫步)</h4>
+            <p>號稱日本最長的直線拱廊商店街，全平地，有遮雨棚。</p>
+            <ul>
+                <li><strong>適合：</strong> 隨意逛街、藥妝採購、體驗當地生活。</li>
+                <li><strong>交通：</strong> 從港口走路即可到達（約15分鐘），或搭計程車起跳價即達。</li>
+                <li><span class="tag-veg">素食推薦</span> 商店街內有許多咖啡廳 (如 Doutor, Tully's)，輕食較容易解決。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h4>方案 C：展海峰展望台 (絕景但稍遠)</h4>
+            <p>眺望九十九島最美的地方。雖然需要搭車較遠，但風景無敵。</p>
+            <ul>
+                <li><strong>適合：</strong> 熱愛攝影與壯麗風景。</li>
+                <li><strong>注意：</strong> 下車後需走一小段坡路/階梯到展望台，請評估膝蓋狀況。</li>
+            </ul>
+             <table class="transport-table">
+                <tr>
+                    <th>項目</th>
+                    <th>計程車 (單程/一台車)</th>
+                    <th>公車</th>
+                </tr>
+                <tr>
+                    <td>車資預估</td>
+                    <td>約 ¥4,000 (較貴)</td>
+                    <td>班次極少，不建議</td>
+                </tr>
+                <tr>
+                    <td>步行疲勞度</td>
+                    <td>⭐⭐ (下車後需走)</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Day 5 Section -->
+    <div id="day5" class="section">
+        <div class="card">
+            <h3>Day 5：海上巡航 <span class="tag-easy">放鬆</span></h3>
+            <p>旅程的尾聲，享受設施並準備打包。</p>
+            <hr>
+            <h4>📝 今日任務：</h4>
+            <ol>
+                <li><strong>打包行李：</strong> 午餐後開始整理，通常需在午夜前將大件行李放在房門口托運。</li>
+                <li><strong>結清帳單：</strong> 建議使用信用卡綁定房卡，就不用去櫃台排隊結帳。</li>
+                <li><strong>巧克力咖啡廳 (Jean-Philippe)：</strong> 位於 6 樓，去喝杯世界冠軍巧克力大師的熱可可（需付費），犒賞自己。</li>
+                <li><strong>告別晚餐：</strong> 今晚主餐廳通常有船長之夜或特殊菜單。</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Day 6 Section -->
+    <div id="day6" class="section">
+        <div class="card">
+            <h3>Day 6：抵達基隆 (06:00)</h3>
+            <p><strong>平安回家</strong></p>
+            <ul>
+                <li><strong>早餐：</strong> 自助餐廳 05:30 就開放了，建議早點吃。</li>
+                <li><strong>離船：</strong> 依照廣播指示分批下船。</li>
+                <li><strong>通關：</strong> 領取行李後，通過海關，直接搭計程車或接送車回家休息。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Prep Section -->
+    <div id="prep" class="section">
+        <div class="card">
+            <h2>🎒 行李清單</h2>
+            <ul>
+                <li><strong>藥品：</strong> 高血壓藥、暈船藥 (船上有賣但貴)、常備腸胃藥、痠痛貼布。建議分裝在隨身包。</li>
+                <li><strong>保暖衣物：</strong> 船內冷氣強，甲板風大。請務必帶「防風薄外套」和「絲巾/圍巾」。</li>
+                <li><strong>鞋子：</strong> 請穿「止滑、好穿脫」的平底鞋或運動鞋。船很大，即便是少走路行程，一天也會走不少步。</li>
+                <li><strong>保溫瓶：</strong> 房間水不可生飲，可拿保溫瓶去自助餐廳裝熱水回房喝。</li>
+                <li><strong>牙刷牙膏：</strong> 郵輪響應環保，通常不提供一次性牙刷，請自備。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📱 網卡與通訊</h2>
+            <ul>
+                <li><strong>船上 Wi-Fi：</strong> 衛星網路非常貴且慢，若非必要，建議用「斷網排毒」的心情享受。</li>
+                <li><strong>日本網卡：</strong> 買一般日本漫遊卡即可（Day 3, 4 靠岸時可用）。船在公海時是收不到日本訊號的。</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left-color: var(--success-color);">
+            <h2>🥬 素食溝通卡 (可截圖)</h2>
+            <div style="background:#f1f8e9; padding:15px; border-radius:8px; border:1px dashed #aaa;">
+                <p style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;">我是蛋奶素食者</p>
+                <p style="color:#555;">I am a Lacto-Ovo Vegetarian.</p>
+                <p style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;">我不吃肉和海鮮</p>
+                <p style="color:#555;">I do NOT eat meat, fish, or seafood.</p>
+                <p style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;">我可以吃雞蛋和牛奶</p>
+                <p style="color:#555;">I CAN eat eggs and dairy products.</p>
+            </div>
+            <p style="margin-top:10px; font-size:0.9rem;">*在日本餐廳或船上點餐時，可以直接出示此畫面給服務人員看。</p>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 樂齡郵輪之旅 | Made with ❤️ for Family</p>
+    <br>
+    <br>
+    <br>
+</footer>
+
+<a href="#" class="back-to-top" onclick="window.scrollTo(0,0); return false;">↑</a>
+
+<script>
+    function showSection(sectionId) {
+        // 隱藏所有區塊
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // 顯示選定區塊
+        const target = document.getElementById(sectionId);
+        if (target) {
+            target.classList.add('active');
+        }
+
+        // 更新導航按鈕狀態
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            // 簡單判斷：若按鈕文字包含 ID 的關鍵字或 onclick 內容匹配 (此處採 onclick 匹配)
+            if (btn.getAttribute('onclick').includes(sectionId)) {
+                btn.classList.add('active');
             }
-        ];
+        });
 
-        // --- 功能函數 ---
+        // 自動捲動到頂部
+        window.scrollTo(0, 0);
+    }
+</script>
 
-        function init() {
-            renderTabs();
-            switchTab(0);
-        }
-
-        // 渲染導航 Tabs
-        function renderTabs() {
-            const container = document.getElementById('tabs-container');
-            container.innerHTML = tripData.map((day, index) => `
-                <button 
-                    onclick="switchTab(${index})"
-                    id="tab-${index}"
-                    class="tab-inactive px-5 py-3 rounded-lg flex-shrink-0 transition-all duration-300 focus:outline-none"
-                >
-                    <div class="text-xs uppercase font-bold tracking-wider">Day ${day.day}</div>
-                    <div class="text-sm font-bold">${day.location}</div>
-                </button>
-            `).join('');
-        }
-
-        // 切換 Tab
-        function switchTab(index) {
-            // 更新 Tab 樣式
-            tripData.forEach((_, i) => {
-                const btn = document.getElementById(`tab-${i}`);
-                if (i === index) {
-                    btn.className = "tab-active px-6 py-3 rounded-lg flex-shrink-0 shadow-md transform scale-105 transition-all duration-300 focus:outline-none";
-                } else {
-                    btn.className = "tab-inactive px-5 py-3 rounded-lg flex-shrink-0 transition-all duration-300 focus:outline-none hover:bg-sakura-50";
-                }
-            });
-
-            // 渲染內容
-            renderContent(tripData[index]);
-            
-            // 捲動到頂部
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 渲染單日內容
-        function renderContent(data) {
-            const container = document.getElementById('content-container');
-            
-            let html = `
-                <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border-t-4 border-sakura-500 animate-fade-in">
-                    <div class="flex justify-between items-end mb-4 border-b border-gray-100 pb-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-sakura-700">${data.title}</h2>
-                            <p class="text-gray-500 font-medium mt-1"><i class="fa-regular fa-calendar"></i> ${data.date}</p>
-                        </div>
-                        <span class="bg-sakura-100 text-sakura-700 px-3 py-1 rounded-full text-sm font-bold">Day ${data.day}</span>
-                    </div>
-                    <div class="text-gray-700 mb-2">
-                        <span class="font-bold text-sakura-500"><i class="fa-solid fa-star"></i> 今日重點：</span>
-                        ${data.highlights}
-                    </div>
-                </div>
-
-                <div class="relative pl-4 space-y-8">
-                    <div class="timeline-line"></div>
-            `;
-
-            data.schedule.forEach(item => {
-                html += `
-                    <div class="relative z-10 pl-6">
-                        <!-- 時間標記 -->
-                        <div class="absolute -left-2 top-0 bg-sakura-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
-                            ${item.period}
-                        </div>
-                        
-                        <div class="bg-white rounded-xl shadow-md p-5 border border-sakura-100 hover:shadow-lg transition-shadow">
-                            <div class="flex justify-between items-start mb-1">
-                                <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
-                                <span class="text-sm text-gray-400 font-mono">${item.time}</span>
-                            </div>
-
-                            <!-- 交通時間 (新增) -->
-                            ${item.travelInfo ? `
-                                <div class="inline-flex items-center gap-2 bg-gray-50 text-gray-600 px-3 py-1.5 rounded-md text-sm font-medium mb-3 border border-gray-200">
-                                    <i class="fa-solid fa-stopwatch text-sakura-500"></i>
-                                    <span>${item.travelInfo}</span>
-                                </div>
-                            ` : ''}
-                            
-                            <p class="text-lg-plus text-gray-700 mb-3 leading-relaxed">
-                                ${item.desc}
-                            </p>
-
-                            <!-- 素食提示 -->
-                            ${item.veg ? `
-                                <div class="bg-green-50 border-l-4 border-green-500 p-3 mb-3 rounded-r">
-                                    <p class="text-green-800 font-bold text-lg"><i class="fa-solid fa-leaf"></i> 素食筆記</p>
-                                    <p class="text-green-700">${item.veg}</p>
-                                </div>
-                            ` : ''}
-
-                            <!-- 貼心提醒 -->
-                            ${item.tips ? `
-                                <div class="flex items-start gap-2 text-gray-500 text-base mb-3 bg-gray-50 p-2 rounded">
-                                    <i class="fa-solid fa-circle-info mt-1 text-sakura-500"></i>
-                                    <span>${item.tips}</span>
-                                </div>
-                            ` : ''}
-
-                            <!-- 地址卡片 (Uber 專用) -->
-                            ${item.fullAddress ? `
-                                <div class="bg-sea-50 border border-sea-200 rounded-lg p-3 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="text-xs font-bold text-sea-600 uppercase">Uber 目的地設定</span>
-                                        <button onclick="copyToClipboard('${item.fullAddress}')" class="bg-sea-600 hover:bg-sea-700 text-white text-sm px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors shadow-sm">
-                                            <i class="fa-regular fa-copy"></i> 複製地址
-                                        </button>
-                                    </div>
-                                    <p class="text-xl font-bold text-gray-800 font-sans select-all bg-white p-2 rounded border border-gray-100">${item.fullAddress}</p>
-                                    ${item.address !== item.fullAddress ? `<p class="text-sm text-gray-500 mt-1">${item.address}</p>` : ''}
-                                </div>
-                            ` : ''}
-
-                            <!-- 日語小教室 (折疊式) -->
-                            ${item.japanese ? `
-                                <details class="group mt-2">
-                                    <summary class="list-none flex items-center gap-2 cursor-pointer bg-sakura-50 text-sakura-700 px-4 py-2 rounded-lg hover:bg-sakura-100 transition-colors font-bold select-none">
-                                        <i class="fa-solid fa-language text-xl"></i>
-                                        <span>實用日語 (點擊展開)</span>
-                                        <i class="fa-solid fa-chevron-down ml-auto group-open:rotate-180 transition-transform"></i>
-                                    </summary>
-                                    <div class="mt-2 p-4 bg-white border border-sakura-200 rounded-lg shadow-inner">
-                                        <p class="text-2xl font-bold text-gray-800 mb-1 leading-snug">${item.japanese.kanji}</p>
-                                        <p class="text-lg text-sakura-500 mb-2">${item.japanese.kana}</p>
-                                        <p class="text-base text-gray-500 border-t border-gray-100 pt-2 flex items-center gap-2">
-                                            <i class="fa-solid fa-share text-xs"></i> ${item.japanese.meaning}
-                                        </p>
-                                    </div>
-                                </details>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-
-            // 底部通用提醒
-            if(data.day === 3 || data.day === 4) {
-                 html += `
-                    <div class="relative z-10 pl-6 mt-8">
-                        <div class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 shadow-sm">
-                            <h4 class="font-bold text-yellow-800 text-lg mb-2"><i class="fa-solid fa-taxi"></i> Uber 用車提醒</h4>
-                            <p class="text-gray-700">您們共有 5 人，日本一般的計程車 (Uber Taxi) 通常只能坐 4 人。</p>
-                            <ul class="list-disc list-inside mt-2 text-gray-700">
-                                <li>建議選擇 <strong>Uber Black Van</strong> (大車)。</li>
-                                <li>或是直接叫 <strong>2 台車</strong> 分批前往。</li>
-                            </ul>
-                        </div>
-                    </div>
-                 `;
-            }
-
-            html += `</div>`; // End timeline container
-            
-            // 加入頁尾留白
-            html += `<div class="h-12"></div>`;
-
-            container.innerHTML = html;
-        }
-
-        // 複製到剪貼簿功能
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`已複製：${text}`);
-            }).catch(err => {
-                // Fallback for older browsers
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("copy");
-                document.body.removeChild(textArea);
-                showToast(`已複製：${text}`);
-            });
-        }
-
-        // 顯示 Toast
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-2 mb-3';
-            toast.innerHTML = `<i class="fa-solid fa-check-circle text-green-400"></i> <span class="font-medium truncate max-w-xs">${message}</span>`;
-            
-            container.appendChild(toast);
-            
-            // 動畫結束後移除 DOM
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        // 啟動
-        window.onload = init;
-
-    </script>
 </body>
 </html>

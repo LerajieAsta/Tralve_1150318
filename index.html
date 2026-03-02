@@ -1,714 +1,595 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MSC 榮耀號：樂齡舒活之旅</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSC榮耀號 2026 福岡佐世保之旅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- 基礎設定 & 變數 --- */
-        :root {
-            --primary-color: #003366; /* MSC 海軍藍 */
-            --accent-color: #C5A065; /* 奢華金 */
-            --bg-color: #F9F7F2; /* 暖米色，護眼 */
-            --text-color: #333333; /* 深灰，易讀 */
-            --light-text: #ffffff;
-            --success-color: #4CAF50; /* 素食標示綠 */
-            --warning-color: #D32F2F; /* 警示紅 */
-            --card-bg: #ffffff;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         body {
-            font-family: "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.8; /* 寬鬆行距 */
-            font-size: 18px; /* 預設大字體 */
-            padding-bottom: 80px; /* 避免內容被底部導航遮住 */
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f0f7ff; /* 柔和淺藍底色 */
+            color: #1e293b;
         }
-
-        /* --- 頂部標題區 --- */
-        header {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            padding: 20px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        /* 針對長輩閱讀優化：較大的基礎字體與行距 */
+        p, li, td, th {
+            font-size: 1.125rem; /* 18px */
+            line-height: 1.8;
         }
-
-        h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: bold;
+        h1, h2, h3, h4 {
+            line-height: 1.4;
         }
-
-        .subtitle {
-            font-size: 0.9rem;
-            color: var(--accent-color);
-            margin-top: 5px;
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
         }
-
-        /* --- 導航列 (Tab) --- */
-        .nav-scroller {
-            background-color: #fff;
-            white-space: nowrap;
-            overflow-x: auto;
-            padding: 10px 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 76px; /* Header 高度 */
-            z-index: 999;
-            -webkit-overflow-scrolling: touch; /* iOS 滑動順暢 */
+        /* 表格高亮效果 */
+        tbody tr {
+            transition: background-color 0.2s ease;
         }
-
-        .nav-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border: 2px solid var(--primary-color);
-            border-radius: 25px;
-            background-color: transparent;
-            color: var(--primary-color);
-            font-size: 1rem;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        tbody tr:hover {
+            background-color: #e0f2fe; /* hover 時呈現溫和淺藍 */
         }
-
-        .nav-btn.active {
-            background-color: var(--primary-color);
-            color: var(--light-text);
+        /* 隱藏滾動條但保持可滾動 (針對水平表格) */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-
-        /* --- 內容區塊 --- */
-        .container {
-            padding: 15px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .section {
-            display: none; /* 預設隱藏 */
-            animation: fadeIn 0.5s;
-        }
-
-        .section.active {
-            display: block; /* 啟用時顯示 */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- 卡片設計 --- */
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--accent-color);
-        }
-
-        .card.warning {
-            border-left: 5px solid var(--warning-color);
-            background-color: #fff8f8;
-        }
-
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-            margin-top: 0;
-            font-size: 1.3rem;
-        }
-
-        .card.warning h2 {
-            color: var(--warning-color);
-            border-bottom-color: var(--warning-color);
-        }
-
-        h3 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        /* --- 特殊標籤 --- */
-        .tag-veg {
-            background-color: var(--success-color);
-            color: #fff;
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
-
-        .tag-easy {
-            background-color: #6c757d; /* 灰色 */
-            color: #fff;
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-left: 5px;
-        }
-
-        .price-tag {
-            color: var(--warning-color);
-            font-weight: bold;
-            font-family: monospace;
-            background: #ffebee;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        /* --- 表格樣式 (交通比較) --- */
-        .transport-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.95rem;
-        }
-
-        .transport-table th, .transport-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .transport-table th {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-
-        .transport-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        /* --- 強調文字 --- */
-        .highlight {
-            color: #d9534f;
-            font-weight: bold;
-        }
-
-        .tip-box {
-            background-color: #e3f2fd;
-            border-left: 5px solid #2196f3;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 4px;
-        }
-
-        /* --- 頁尾 --- */
-        footer {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 30px;
-            padding-bottom: 20px;
-        }
-
-        /* --- 回到頂部按鈕 --- */
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            text-decoration: none;
-            font-size: 20px;
-            z-index: 1001;
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-<header>
-    <h1>MSC 榮耀號：舒活之旅</h1>
-    <div class="subtitle">2026/3/18 - 3/23 (六天五夜)</div>
-</header>
+    <!-- 自訂 Toast 提示訊息 -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-lg transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-lg">
+        訊息內容
+    </div>
 
-<!-- 導航列 -->
-<div class="nav-scroller">
-    <button class="nav-btn active" onclick="showSection('overview')">總覽</button>
-    <button class="nav-btn" onclick="showSection('pricing')">💰 消費參考</button>
-    <button class="nav-btn" onclick="showSection('day1')">Day 1</button>
-    <button class="nav-btn" onclick="showSection('day2')">Day 2</button>
-    <button class="nav-btn" onclick="showSection('day3')">Day 3 (福岡)</button>
-    <button class="nav-btn" onclick="showSection('day4')">Day 4 (佐世保)</button>
-    <button class="nav-btn" onclick="showSection('day5')">Day 5</button>
-    <button class="nav-btn" onclick="showSection('day6')">Day 6</button>
-    <button class="nav-btn" onclick="showSection('prep')">行前準備</button>
-</div>
-
-<div class="container">
-
-    <!-- 總覽 Section -->
-    <div id="overview" class="section active">
-        <div class="card warning">
-            <h2>⚠️ 重要：船上是美金！</h2>
-            <p><strong>請注意：</strong> 船上所有標價都是 <strong>美金 (USD)</strong>。</p>
-            <ul>
-                <li>看到 $10 不是 10 元台幣，大約是 <strong>320 元台幣</strong>。</li>
-                <li><strong>簡單算法：</strong> 看到數字，心裡直接 <strong>乘以 32</strong>。</li>
-                <li>船上消費會加收 15% 服務費，直接記在房卡帳單，不用付現金。</li>
-            </ul>
+    <!-- 導航列 -->
+    <nav class="bg-blue-800 text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-ship text-2xl text-blue-200"></i>
+                    <span class="font-bold text-xl md:text-2xl tracking-wide">MSC 郵輪旅程</span>
+                </div>
+                <!-- 電腦版選單 -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md font-medium transition">首頁</a>
+                        <a href="#expenses" class="hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md font-medium transition">船上消費</a>
+                        <a href="#plans" class="hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md font-medium transition">景點推薦</a>
+                        <a href="#transport" class="hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md font-medium transition">岸上交通</a>
+                        <a href="#notes" class="hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md font-medium transition">注意事項</a>
+                    </div>
+                </div>
+                <!-- 手機版選單按鈕 -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-blue-200 hover:text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">開啟主要選單</span>
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>🚢 行程重點</h2>
-            <p>這是一趟專為家人設計的慢活旅程，主打<strong>「不趕路、睡到飽、吃得好」</strong>。</p>
-            <ul>
-                <li><strong>船名：</strong> MSC Bellissima 榮耀號</li>
-                <li><strong>日期：</strong> 3/18 (三) - 3/23 (一)</li>
-                <li><strong>核心精神：</strong> 累了就休息，餓了就吃，風景自在看。</li>
-            </ul>
+        <!-- 手機版選單面板 -->
+        <div class="md:hidden hidden bg-blue-900" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">首頁</a>
+                <a href="#expenses" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">船上消費</a>
+                <a href="#plans" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">景點推薦</a>
+                <a href="#transport" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">岸上交通</a>
+                <a href="#notes" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">注意事項</a>
+            </div>
         </div>
+    </nav>
+
+    <!-- 首頁內容 -->
+    <section id="home" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="bg-white rounded-3xl p-8 md:p-12 card-shadow text-center md:text-left relative overflow-hidden">
+            <!-- 背景裝飾 -->
+            <i class="fa-solid fa-compass absolute -right-10 -bottom-10 text-9xl text-blue-50 opacity-50 pointer-events-none"></i>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-800 font-semibold mb-4 text-sm md:text-base">
+                        2026年3月18日 - 3月23日
+                    </span>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 mb-6">MSC榮耀號<br>福岡與佐世保6天5夜<br><span class="text-blue-600">郵輪放鬆行程</span></h1>
+                    
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
+                        <button onclick="copyItinerary()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition shadow-md flex items-center gap-2">
+                            <i class="fa-regular fa-copy"></i> 複製行程文字
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                        <h3 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-route mr-2"></i> 航線概覽</h3>
+                        <div class="relative border-l-2 border-blue-200 ml-3 md:ml-4 space-y-6 pb-4">
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-blue-500 border-2 border-white"></span>
+                                <strong class="text-xl text-blue-800">Day 1：基隆出發</strong>
+                                <p class="text-gray-600 mt-1">18:00 啟航 (建議14:00前抵達港務局登船)</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-blue-300 border-2 border-white"></span>
+                                <strong class="text-xl text-gray-700">Day 2：海上巡航</strong>
+                                <p class="text-gray-600 mt-1">享受船上設施、適應環境</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-yellow-500 border-2 border-white"></span>
+                                <strong class="text-xl text-yellow-700">Day 3：日本 福岡</strong>
+                                <p class="text-gray-600 mt-1">07:00 抵達港口 - 18:00 啟航離開</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-yellow-500 border-2 border-white"></span>
+                                <strong class="text-xl text-yellow-700">Day 4：日本 佐世保</strong>
+                                <p class="text-gray-600 mt-1">08:00 抵達港口 - 17:00 啟航離開</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-blue-300 border-2 border-white"></span>
+                                <strong class="text-xl text-gray-700">Day 5：海上巡航</strong>
+                                <p class="text-gray-600 mt-1">海上放鬆、打包行李</p>
+                            </div>
+                            <div class="relative pl-6">
+                                <span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-blue-500 border-2 border-white"></span>
+                                <strong class="text-xl text-blue-800">Day 6：返回基隆</strong>
+                                <p class="text-gray-600 mt-1">06:00 抵達基隆港，帶著美好回憶回家</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 地圖區塊 -->
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-map-location-dot mr-2"></i> 航線地圖示意</h3>
+                <div class="rounded-2xl overflow-hidden shadow-md h-80 w-full border border-gray-200 relative bg-gray-100">
+                    <!-- 載入 Google Maps (範圍涵蓋台灣至日本九州) -->
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        style="border:0;" 
+                        src="https://maps.google.com/maps?q=Fukuoka&t=&z=5&ie=UTF8&iwloc=&output=embed" 
+                        allowfullscreen 
+                        loading="lazy">
+                    </iframe>
+                </div>
+                <p class="text-center text-gray-500 mt-3 text-sm">此為大範圍區域地圖，實際航線將由基隆向北航行至日本九州地區的福岡與佐世保。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 船上消費區塊 -->
+    <section id="expenses" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-8 text-center"><i class="fa-solid fa-file-invoice-dollar mr-3"></i>船上主要消費估算</h2>
+        <div class="bg-white rounded-3xl p-6 md:p-10 card-shadow">
+            <p class="mb-6 text-gray-700 text-center">以下項目預估單位皆為 <strong>新台幣 (TWD)</strong>，外幣計價之項目皆已依 <strong>匯率 32 元</strong> 換算，實際依結帳匯率為準。</p>
+            
+            <div class="overflow-x-auto no-scrollbar rounded-xl border border-blue-100">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-blue-800 text-white">
+                            <th class="p-4 rounded-tl-xl font-medium text-xl w-1/4">項目類別</th>
+                            <th class="p-4 font-medium text-xl w-1/4">預估單價</th>
+                            <th class="p-4 rounded-tr-xl font-medium text-xl w-1/2">備註說明</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-5 font-bold text-blue-900"><i class="fa-solid fa-bell-concierge mr-2 text-blue-500"></i>船上服務費</td>
+                            <td class="p-5 font-bold text-lg text-gray-800">576 元 / 人 / 晚</td>
+                            <td class="p-5 text-gray-600">此為必須費用 (每晚 18 美金)。自動計入房帳，下船前結清。</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-900"><i class="fa-solid fa-wifi mr-2 text-blue-500"></i>WiFi 衛星網路<br><span class="text-sm font-normal text-gray-500">(每晚單價)</span></td>
+                            <td class="p-5 text-base leading-relaxed">
+                                <span class="font-bold text-blue-800">① 無限瀏覽</span><br>
+                                1台 640元 | 2台 1,024元<br>
+                                3台 1,440元 | 4台 1,792元<br>
+                                <div class="my-2 border-t border-gray-200"></div>
+                                <span class="font-bold text-blue-800">② 瀏覽+串流</span><br>
+                                1台 832元 | 2台 1,344元<br>
+                                3台 1,824元 | 4台 2,176元
+                            </td>
+                            <td class="p-5 text-gray-600">
+                                依旅行社公告美金定價換算，<strong class="text-red-600">需購買全航次(5晚)</strong>。<br>
+                                另有單日 24hr 方案：瀏覽 1台 1,280元 / 串流 1台 1,472元。<br><br>
+                                <strong class="text-blue-700">【無限瀏覽】</strong>可傳訊、收發信件與照片。<br>
+                                <strong class="text-blue-700">【瀏覽+串流】</strong>支援語音/視訊通話及看影音串流平台。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-900"><i class="fa-solid fa-mug-hot mr-2 text-blue-500"></i>飲料套餐<br><span class="text-sm font-normal text-gray-500">(Easy / 無酒精)</span></td>
+                            <td class="p-5">約 1,000 元 / 人 / 天</td>
+                            <td class="p-5 text-gray-600">含礦泉水、現打果汁、氣泡水與熱茶咖啡。</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-900"><i class="fa-solid fa-ice-cream mr-2 text-blue-500"></i>Venchi 義式冰淇淋</td>
+                            <td class="p-5">約 150 - 300 元 / 份</td>
+                            <td class="p-5 text-gray-600">船上超人氣甜點！不包含在飲料套餐內，需額外單點（依口味/球數計價）。</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-900"><i class="fa-solid fa-gamepad mr-2 text-blue-500"></i>遊樂設施與電玩</td>
+                            <td class="p-5">單次約 300 - 500 元</td>
+                            <td class="p-5 text-gray-600">包含 F1 賽車模擬器、XD 互動影院、保齡球、VR 迷宮等。若需求大可考慮購買「Fun Pass 娛樂通行證」較划算。</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-blue-900"><i class="fa-solid fa-utensils mr-2 text-blue-500"></i>特色餐廳與水療</td>
+                            <td class="p-5">依菜單或服務計價</td>
+                            <td class="p-5 text-gray-600">如海渡鐵板燒、美式牛排館或 SPA 按摩，建議上船第一天先預約。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行程景點推薦區塊 (Tabs) -->
+    <section id="plans" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-4 text-center"><i class="fa-solid fa-clipboard-list mr-3"></i>岸上觀光景點推薦 (可自由挑選)</h2>
+        <p class="text-center text-xl text-gray-700 mb-10 max-w-3xl mx-auto">
+            考量行程舒適度，以下精選景點皆符合 <strong class="text-blue-700 border-b-4 border-blue-200">「低步行量」、「適合計程車直達」</strong> 的原則，建議依當日天氣與體力，挑選 1~2 個景點悠閒遊覽即可。
+        </p>
+
+        <!-- Tab 按鈕 -->
+        <div class="flex flex-col md:flex-row justify-center gap-2 md:gap-4 mb-8">
+            <button onclick="openTab(event, 'fukuoka-spots')" class="tab-links w-full md:w-auto px-8 py-4 text-xl font-bold rounded-2xl md:rounded-full bg-blue-600 text-white shadow-lg transition transform hover:-translate-y-1">
+                📍 福岡 推薦景點 (5選)
+            </button>
+            <button onclick="openTab(event, 'sasebo-spots')" class="tab-links w-full md:w-auto px-8 py-4 text-xl font-bold rounded-2xl md:rounded-full bg-white text-blue-800 shadow transition transform hover:-translate-y-1 hover:bg-blue-50">
+                📍 佐世保 推薦景點 (5選)
+            </button>
+        </div>
+
+        <!-- 福岡景點內容 -->
+        <div id="fukuoka-spots" class="tab-content block bg-white rounded-3xl p-6 md:p-10 card-shadow border-t-8 border-blue-500">
+            <div class="mb-6">
+                <h3 class="text-3xl font-bold text-blue-900">Day 3 福岡 (博多港)</h3>
+                <p class="text-gray-600 mt-2 text-lg">靠港時間：07:00 - 18:00 (建議最晚 16:30 前乘車返回港口)</p>
+            </div>
+            
+            <div class="overflow-x-auto no-scrollbar rounded-xl border border-gray-200">
+                <table class="w-full text-left border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="bg-blue-50 text-blue-900 border-b-2 border-blue-200">
+                            <th class="p-4 font-bold text-xl w-1/5">景點名稱</th>
+                            <th class="p-4 font-bold text-xl w-2/5">特色與活動 (步行輕鬆度)</th>
+                            <th class="p-4 font-bold text-xl w-1/5">餐飲建議 <span class="text-green-600 text-sm">(含素食)</span></th>
+                            <th class="p-4 font-bold text-xl w-1/5">交通估算 (單趟)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">1. 太宰府天滿宮</td>
+                            <td class="p-5 align-top text-gray-700">
+                                經典日式風情必訪。表參道平緩好走，沿途可賞景祈福。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                名物「梅枝餅」(<span class="text-green-600 font-bold">蛋奶素可*</span>)<br>
+                                參道旁蕎麥麵/烏龍麵店。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 40分<br>約 1,000 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">2. LaLaport 福岡</td>
+                            <td class="p-5 align-top text-gray-700">
+                                全新大型室內商場，門口有1:1巨型鋼彈。地面平坦、座位極多、不怕日曬雨淋。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                美食街選擇極多，<span class="text-green-600 font-bold">容易找到素食披薩、無肉沙拉*</span>。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 20分<br>約 450 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">3. 大濠公園</td>
+                            <td class="p-5 align-top text-gray-700">
+                                市區大型水景公園，設有平緩寬廣的環湖步道，極度放鬆的賞景行程。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                湖畔星巴克與輕食，或<span class="text-green-600 font-bold">直接回郵輪免費用餐*</span>。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 15分<br>約 400 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">4. 博多運河城</td>
+                            <td class="p-5 align-top text-gray-700">
+                                經典複合式購物中心，定時有免費水舞秀，適合逛街採買藥妝服飾。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                餐廳層有多國料理，<span class="text-green-600 font-bold">素食者可找義式料理*</span>。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 15分<br>約 400 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">5. 福岡塔 & 海濱公園</td>
+                            <td class="p-5 align-top text-gray-700">
+                                搭電梯直達塔頂賞海景與市區全貌，免走路即可享受遼闊視野。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                塔內或周邊海濱餐廳，提供西式簡餐與甜點。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 20分<br>約 450 TWD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 佐世保景點內容 -->
+        <div id="sasebo-spots" class="tab-content hidden bg-white rounded-3xl p-6 md:p-10 card-shadow border-t-8 border-yellow-500">
+            <div class="mb-6">
+                <h3 class="text-3xl font-bold text-blue-900">Day 4 佐世保 (佐世保港)</h3>
+                <p class="text-gray-600 mt-2 text-lg">靠港時間：08:00 - 17:00 (建議最晚 15:30 前乘車返回港口)</p>
+            </div>
+            
+            <div class="overflow-x-auto no-scrollbar rounded-xl border border-gray-200">
+                <table class="w-full text-left border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="bg-yellow-50 text-yellow-900 border-b-2 border-yellow-200">
+                            <th class="p-4 font-bold text-xl w-1/5">景點名稱</th>
+                            <th class="p-4 font-bold text-xl w-2/5">特色與活動 (步行輕鬆度)</th>
+                            <th class="p-4 font-bold text-xl w-1/5">餐飲建議 <span class="text-green-600 text-sm">(含素食)</span></th>
+                            <th class="p-4 font-bold text-xl w-1/5">交通估算 (單趟)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">1. 九十九島遊覽船</td>
+                            <td class="p-5 align-top text-gray-700">
+                                搭乘海盜船造型觀光船穿梭島嶼間。全程坐著吹海風賞景，極度放鬆。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                遊客中心內有餐廳與咖啡廳，<span class="text-green-600 font-bold">提供輕食簡餐*</span>。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 15分<br>約 450 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">2. 佐世保五番街</td>
+                            <td class="p-5 align-top text-gray-700">
+                                就在港口旁邊的大型商場。隨時可走回船上休息，採買藥妝、超市極為方便。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                豐富的美食街，<span class="text-green-600 font-bold">素食選擇多*</span>，或直接走回船上吃。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">步行 5-10分<br><span class="text-blue-600 font-bold">車資 0 元</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">3. 四町商店街</td>
+                            <td class="p-5 align-top text-gray-700">
+                                日本最長的直線商店街。有屋頂遮蔽，路面平坦，適合採買與感受在地氣息。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                著名佐世保漢堡、商店街咖啡廳 (<span class="text-green-600 font-bold">西式甜點、三明治*</span>)。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 5分<br>約 200 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">4. 展海峰 (觀景台)</td>
+                            <td class="p-5 align-top text-gray-700">
+                                眺望九十九島最美、180度全景的觀景台。三月下旬有機會賞油菜花海 (需爬小段階梯)。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                僅有小吃攤販，建議用餐後再前往，或回市區用餐。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 25分<br>約 650 TWD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-5 font-bold text-lg text-gray-800 align-top">5. 豪斯登堡 (半日遊)</td>
+                            <td class="p-5 align-top text-gray-700">
+                                充滿歐洲風情的主題樂園，三月有絕美鬱金香祭。園區內有遊園巴士與運河船代步。<br>
+                                <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded mt-2 inline-block">步行輕鬆度：⭐⭐⭐⭐</span>
+                            </td>
+                            <td class="p-5 align-top text-gray-700">
+                                園區內異國餐廳多，<span class="text-green-600 font-bold">容易找到蛋奶素披薩/義大利麵*</span>。
+                            </td>
+                            <td class="p-5 align-top text-gray-700">計程車約 30分<br>約 800 TWD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 岸上交通與地圖區塊 -->
+    <section id="transport" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-blue-50 rounded-3xl mb-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-8 text-center"><i class="fa-solid fa-taxi mr-3"></i>日本岸上交通與港口地圖</h2>
         
-        <div class="card">
-            <h2>🥗 素食者貼心提醒</h2>
-            <p>船上對於飲食限制非常友善，請放心。</p>
-            <ul>
-                <li><strong>主餐廳 (5/6樓)：</strong> 每日菜單皆有標示 <span class="tag-veg">V (Vegetarian)</span> 的選項。第一餐請務必告知服務生 "Vegetarian" (素食)，他們會特別註記。</li>
-                <li><strong>市集自助餐廳 (15樓)：</strong> 設有蔬食區、Pizza區、沙拉吧與水果區，選擇最豐富。</li>
-                <li><strong>植物奶：</strong> 船上咖啡廳通常提供豆奶或燕麥奶（可能需額外付費或包含在飲品套餐中）。</li>
-            </ul>
-        </div>
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 福岡 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-800 text-white w-10 h-10 flex items-center justify-center rounded-full text-xl font-bold">1</span>
+                    <h3 class="text-2xl font-bold text-blue-900">福岡 (博多港)</h3>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4">
+                    <p class="font-bold text-gray-800 mb-2">🚕 計程車資訊 (以5人分攤計算極划算)：</p>
+                    <ul class="space-y-1 text-gray-700">
+                        <li>📍 至天神/博多車站：約 15分鐘 (約 400 TWD)</li>
+                        <li>📍 至太宰府天滿宮：約 40分鐘 (約 1,000 TWD)</li>
+                        <li>📍 至大濠公園：約 15分鐘 (約 400 TWD)</li>
+                    </ul>
+                    <p class="text-sm text-red-500 mt-2">* 日本計程車一般限乘4人，5人同行建議在港口排隊時要求「大型計程車 (Jumbo Taxi)」，或分乘兩台一般計程車。</p>
+                </div>
+                <div class="h-64 w-full rounded-xl overflow-hidden border border-gray-300">
+                    <iframe src="https://maps.google.com/maps?q=Hakata+Port+International+Terminal&t=&z=14&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
 
-    <!-- 消費參考 Section -->
-    <div id="pricing" class="section">
-        <div class="card">
-            <h2>💰 必備與基本開銷</h2>
-            <p>這是不花額外錢也會產生的基本費用。記得 <strong>x 32</strong> 換算台幣。</p>
-            <table class="transport-table">
-                <tr>
-                    <th style="width: 40%;">項目</th>
-                    <th>預估價格 (USD)</th>
-                </tr>
-                <tr>
-                    <td><strong>每日服務費 (小費)</strong><br><span style="font-size:0.8rem; color:#666;">每人每晚自動扣款。</span></td>
-                    <td><span class="price-tag">$16 ~ $18</span> /晚<br><span style="font-size:0.85rem; color:#555;">(約 NT$510 ~ $580)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Wi-Fi 網路</strong><br><span style="font-size:0.8rem; color:#666;">1個裝置，僅瀏覽網頁/Line。</span></td>
-                    <td><span class="price-tag">$12 ~ $15</span> /天<br><span style="font-size:0.85rem; color:#555;">(約 NT$390 ~ $480)</span></td>
-                </tr>
-            </table>
+            <!-- 佐世保 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-800 text-white w-10 h-10 flex items-center justify-center rounded-full text-xl font-bold">2</span>
+                    <h3 class="text-2xl font-bold text-blue-900">佐世保 (佐世保港)</h3>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4">
+                    <p class="font-bold text-gray-800 mb-2">🚕 計程車資訊：</p>
+                    <ul class="space-y-1 text-gray-700">
+                        <li>📍 至佐世保五番街：步行 5-10分鐘 或車程 3分鐘</li>
+                        <li>📍 至四町商店街：約 5分鐘 (約 200 TWD)</li>
+                        <li>📍 至九十九島觀光區：約 15分鐘 (約 450 TWD)</li>
+                    </ul>
+                    <p class="text-sm text-blue-600 mt-2 font-bold">佐世保港區非常靠近市中心，下船走幾步路即可到達熱鬧的商場，極為便利。</p>
+                </div>
+                <div class="h-64 w-full rounded-xl overflow-hidden border border-gray-300">
+                    <iframe src="https://maps.google.com/maps?q=Sasebo+Port+Cruise+Terminal&t=&z=14&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2>🍽️ 餐飲與飲料 (額外消費)</h2>
-            <p>主餐廳與自助餐廳是<strong>免費</strong>的。以下是「付費特色餐廳」與「單點飲料」參考：</p>
+    <!-- 注意事項與頁尾 -->
+    <section id="notes" class="bg-blue-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8 border-b border-blue-700 pb-4"><i class="fa-solid fa-circle-exclamation mr-3"></i>重要注意事項 (行前準備)</h2>
             
-            <table class="transport-table">
-                 <tr>
-                    <th colspan="2" style="background-color: #f0f0f0; color: #333; text-align: center;">特色餐廳 (按人頭/套餐計費)</th>
-                </tr>
-                <tr>
-                    <td><strong>美式牛排屋 (Butcher's Cut)</strong></td>
-                    <td>套餐約 <span class="price-tag">$39 ~ $59</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$1,250 ~ $1,900)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>海渡鐵板燒 (Kaito Teppanyaki)</strong></td>
-                    <td>套餐約 <span class="price-tag">$30 ~ $60</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$960 ~ $1,920)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Hola! Tacos (墨西哥料理)</strong></td>
-                    <td>吃到飽約 <span class="price-tag">$18</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$580)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>海中閣火鍋 (Sea Pavilion)</strong></td>
-                    <td>套餐約 <span class="price-tag">$35</span> 起<br><span style="font-size:0.85rem; color:#555;">(約 NT$1,120)</span></td>
-                </tr>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-blue-50 text-lg">
+                <div>
+                    <h4 class="text-xl font-bold text-yellow-400 mb-3"><i class="fa-solid fa-leaf mr-2"></i>素食餐飲安排</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>主餐廳 (單點式)：報到第一天請主動告知服務生同桌有「蛋奶素」需求，餐廳會為您準備隱藏版素食菜單。</li>
+                        <li>自助餐廳：標示清晰，沙拉吧、水果、披薩、起司、義大利麵等皆有豐富的無肉選項。</li>
+                        <li>下船觀光：日本純素食餐廳較少，建議尋找烏龍麵、蕎麥麵或洋食館。</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold text-yellow-400 mb-3"><i class="fa-solid fa-wheelchair mr-2"></i>無障礙與交通</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>船上備有輪椅借用服務（建議提早預約）。</li>
+                        <li>岸上觀光強烈建議<strong class="text-white bg-blue-700 px-2 rounded mx-1">以計程車代步</strong>，日本計程車司機服務優良，價格由多人分攤下來非常划算。</li>
+                        <li>避免預訂需要長時間走路或爬樓梯的當地巴士團。</li>
+                    </ul>
+                </div>
 
-                <tr>
-                    <th colspan="2" style="background-color: #f0f0f0; color: #333; text-align: center;">飲料與點心 (需另加 15% 服務費)</th>
-                </tr>
-                <tr>
-                    <td><strong>礦泉水 (大瓶 1L)</strong></td>
-                    <td><span class="price-tag">$3.5 ~ $4.5</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$115 ~ $145)</span></td>
-                </tr>
-                 <tr>
-                    <td><strong>罐裝汽水 (可樂/雪碧)</strong></td>
-                    <td><span class="price-tag">$3.5</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$115)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>啤酒 / 紅白酒(杯)</strong></td>
-                    <td><span class="price-tag">$7 ~ $10</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$225 ~ $320)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>調酒 (雞尾酒)</strong></td>
-                    <td><span class="price-tag">$10 ~ $14</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$320 ~ $450)</span></td>
-                </tr>
-                <tr>
-                    <td><strong>義式冰淇淋 (Gelato)</strong></td>
-                    <td><span class="price-tag">$4 ~ $6</span> /球<br><span style="font-size:0.85rem; color:#555;">(約 NT$130 ~ $190)</span></td>
-                </tr>
-                 <tr>
-                    <td><strong>Jean-Philippe 精品熱巧克力</strong></td>
-                    <td><span class="price-tag">$5 ~ $8</span><br><span style="font-size:0.85rem; color:#555;">(約 NT$160 ~ $260)</span></td>
-                </tr>
-            </table>
-            <div class="tip-box">
-                <strong>省錢小撇步：</strong> 船上的自助餐廳全天候提供<strong>免費</strong>的飲用水、熱水與茶包（早餐時段有美式咖啡）。若非必要，不需要一直買瓶裝水，可帶保溫瓶去裝水回房喝。
+                <div class="md:col-span-2 bg-blue-800 p-6 rounded-xl border border-blue-700 mt-4">
+                    <h4 class="text-xl font-bold text-yellow-400 mb-3"><i class="fa-solid fa-credit-card mr-2"></i>省錢小秘訣</h4>
+                    <p>若確定需要 WiFi 或飲料套餐，請務必在 <strong class="text-white border-b-2 border-red-400">登船前於 MSC 官網/旅行社預購</strong>，通常可享 8折 左右的優惠。上船後再買就是原價加服務費！</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center text-blue-300 border-t border-blue-800 pt-8">
+                <p>為您精心策劃的 MSC 榮耀號之旅 ❤️ 祝您旅途愉快、平安順心。</p>
             </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2>🎮 娛樂設施費用</h2>
-            <p>除了泳池、健身房、大劇院秀免費外，部分設施需付費：</p>
-            <ul>
-                <li><strong>F1 賽車模擬器：</strong> 約 <span class="price-tag">$12</span> /次<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$390)</span></li>
-                <li><strong>VR 虛擬迷宮：</strong> 約 <span class="price-tag">$10</span> /次<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$320)</span></li>
-                <li><strong>保齡球：</strong> 約 <span class="price-tag">$30</span> /半小時<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$960)</span></li>
-                <li><strong>XD 互動影院：</strong> 約 <span class="price-tag">$10</span> /次<br><span style="font-size:0.85rem; color:#555; margin-left: 20px;">(約 NT$320)</span></li>
-            </ul>
-            <div class="tip-box">
-                <strong>省錢小撇步：</strong> 船上有販售「娛樂通票 (Fun Pass)」，若想玩多項設施，買通票會比較划算。
-            </div>
-        </div>
-    </div>
-
-    <!-- Day 1 Section -->
-    <div id="day1" class="section">
-        <div class="card">
-            <h3>Day 1：基隆登船與啟航 <span class="tag-easy">輕鬆</span></h3>
-            <p><strong>行程：</strong> 基隆港務大樓報到 ➔ 登船 ➔ 18:00 啟航</p>
-            <hr>
-            <h4>👴 建議路線：</h4>
-            <ol>
-                <li><strong>14:00 左右抵達基隆港：</strong> 避開中午最擁擠的人潮，把行李交給托運人員。</li>
-                <li><strong>登船後直奔 15 樓自助餐廳：</strong> 先坐下來喝杯熱茶、吃點下午茶（此時房間可能還沒整理好）。</li>
-                <li><strong>16:00 進房休息：</strong> 檢查行李是否送達。</li>
-                <li><strong>17:00 安全演習：</strong> 這是強制參加的，現在通常只需看電視教學影片，然後去指定集合點刷房卡即可（不用穿救生衣排隊）。</li>
-                <li><strong>18:00 甲板看啟航：</strong> 建議在陽台房間看，或去 15 樓船尾，避免風大。</li>
-            </ol>
-            
-            <div class="tip-box">
-                <strong>晚餐推薦：</strong> 建議第一晚去<strong>主餐廳 (Main Dining Room)</strong> 享用點餐式晚餐，環境較安靜，適合適應船上搖晃（雖然很大很穩）。
-                <br><br>
-                <span class="tag-veg">素食</span> 記得跟服務生確認 "No meat, No seafood, Eggs/Milk OK"。
-            </div>
-        </div>
-    </div>
-
-    <!-- Day 2 Section -->
-    <div id="day2" class="section">
-        <div class="card">
-            <h3>Day 2：海上巡航 <span class="tag-easy">慢活</span></h3>
-            <p>全日於海上，沒有Morning Call的一天。</p>
-            <hr>
-            <h4>✨ 推薦活動 (少走路)：</h4>
-            <ul>
-                <li><strong>上午 - 榮耀大道 (6樓)：</strong> 抬頭欣賞 80 米長的 LED 天幕秀，每小時有不同的視覺主題，坐著看就很美。</li>
-                <li><strong>下午 - 倫敦大劇院 (6樓)：</strong> 觀賞百老匯等級的歌舞秀（需透過 App 或螢幕預約），坐著吹冷氣看表演最舒適。</li>
-                <li><strong>傍晚 - Sky Lounge (18樓)：</strong> 視野極佳的景觀酒廊，適合看海發呆，人潮通常比泳池畔少很多。</li>
-            </ul>
-        </div>
-        <div class="card">
-            <h2>🍽️ 今日餐飲建議</h2>
-            <p><strong>早餐：</strong> 建議去主餐廳吃「點餐式早餐」，不用自己端盤子走來走去，這對膝蓋最友善。</p>
-            <p><strong>午餐/下午茶：</strong> 15樓市集自助餐廳。特別推薦剛出爐的 Pizza（有素食瑪格麗特口味）。</p>
-        </div>
-    </div>
-
-    <!-- Day 3 Section (Fukuoka) -->
-    <div id="day3" class="section">
-        <div class="card">
-            <h3>Day 3：福岡 (08:00-20:00)</h3>
-            <p><strong>策略：</strong> 計程車代步，定點深度遊。</p>
-            
-            <div class="tip-box">
-                <strong>交通提示：</strong> 福岡博多港離市區很近，計程車費不貴，強烈建議<strong>全程計程車</strong>，省去上下公車的辛苦。
-            </div>
-        </div>
-
-        <div class="card">
-            <h4>方案 A：櫛田神社 + 川端商店街 (經典輕鬆)</h4>
-            <p>博多總鎮守，平地無階梯，旁邊就是有頂棚的商店街。</p>
-            <ul>
-                <li><strong>適合：</strong> 喜歡看日本傳統文化、買土產。</li>
-                <li><span class="tag-veg">素食推薦</span> <strong>Evah Dining (Macrobiotic)</strong>：位於博多 Riverain 購物中心（就在商店街尾端），提供精緻日式素食便當/套餐。</li>
-            </ul>
-            <table class="transport-table">
-                <tr>
-                    <th>項目</th>
-                    <th>計程車 (單程/一台車)</th>
-                    <th>公車/地鐵</th>
-                </tr>
-                <tr>
-                    <td>車資預估</td>
-                    <td>約 ¥1,500 - ¥2,000</td>
-                    <td>約 ¥250/人</td>
-                </tr>
-                <tr>
-                    <td>時間</td>
-                    <td>15 分鐘</td>
-                    <td>30 分鐘 (含等車)</td>
-                </tr>
-                <tr>
-                    <td>步行疲勞度</td>
-                    <td>⭐ (極低)</td>
-                    <td>⭐⭐⭐ (中)</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="card">
-            <h4>方案 B：大濠公園 + 日本庭園 (風景優美)</h4>
-            <p>福岡的都市綠洲，有非常漂亮的湖景和日式庭園，步道平坦。</p>
-            <ul>
-                <li><strong>適合：</strong> 喜歡自然風景、安靜散步。</li>
-                <li><span class="tag-veg">素食推薦</span> 公園內有 <strong>Royal Garden Cafe</strong>，通常有義大利麵或烤蔬菜選項 (需確認有無高湯)，環境極佳。</li>
-            </ul>
-            <table class="transport-table">
-                <tr>
-                    <th>項目</th>
-                    <th>計程車 (單程/一台車)</th>
-                    <th>公車/地鐵</th>
-                </tr>
-                <tr>
-                    <td>車資預估</td>
-                    <td>約 ¥2,500 - ¥3,000</td>
-                    <td>需轉乘，不建議</td>
-                </tr>
-                <tr>
-                    <td>時間</td>
-                    <td>20-25 分鐘</td>
-                    <td>45 分鐘+</td>
-                </tr>
-                 <tr>
-                    <td>步行疲勞度</td>
-                    <td>⭐ (低)</td>
-                    <td>⭐⭐⭐⭐ (高)</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="card">
-            <h4>方案 C：Lalaport 福岡 (購物冷氣團)</h4>
-            <p>有 1:1 實體鋼彈立像，室內全冷氣，有大量椅子可休息。</p>
-            <ul>
-                <li><strong>適合：</strong> 怕熱、怕冷、純購物、看鋼彈。</li>
-                <li><span class="tag-veg">素食推薦</span> 美食街選擇多，找<strong>印度咖哩</strong>或<strong>KuaAina漢堡</strong> (確認是否有非肉類選項) 較容易。</li>
-            </ul>
-             <table class="transport-table">
-                <tr>
-                    <th>項目</th>
-                    <th>計程車 (單程/一台車)</th>
-                    <th>公車</th>
-                </tr>
-                <tr>
-                    <td>車資預估</td>
-                    <td>約 ¥3,000</td>
-                    <td>直達公車排隊長</td>
-                </tr>
-                 <tr>
-                    <td>步行疲勞度</td>
-                    <td>⭐ (極低)</td>
-                    <td>⭐⭐ (排隊累)</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- Day 4 Section (Sasebo) -->
-    <div id="day4" class="section">
-        <div class="card">
-            <h3>Day 4：佐世保 (08:00-19:00)</h3>
-            <p><strong>策略：</strong> 佐世保地形多山，港口就在市區旁。</p>
-        </div>
-
-        <div class="card">
-            <h4>方案 A：九十九島珍珠海洋遊覽區 (最推)</h4>
-            <p>搭乘「珍珠皇后號」遊覽船，在船上坐著看風景，完全不累。</p>
-            <ul>
-                <li><strong>適合：</strong> 全家大小，極度輕鬆。</li>
-                <li><span class="tag-veg">素食推薦</span> 該區域餐廳以海鮮為主。建議在附近的義式餐廳找瑪格麗特披薩，或選擇 <strong>Mos Burger</strong> (通常有大豆漢堡排，需確認醬汁)。</li>
-            </ul>
-             <table class="transport-table">
-                <tr>
-                    <th>項目</th>
-                    <th>計程車 (單程/一台車)</th>
-                    <th>公車</th>
-                </tr>
-                <tr>
-                    <td>車資預估</td>
-                    <td>約 ¥1,800 - ¥2,200</td>
-                    <td>約 ¥260/人</td>
-                </tr>
-                <tr>
-                    <td>時間</td>
-                    <td>15-20 分鐘</td>
-                    <td>25-30 分鐘</td>
-                </tr>
-                <tr>
-                    <td>步行疲勞度</td>
-                    <td>⭐ (極低)</td>
-                    <td>⭐⭐ (中)</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="card">
-            <h4>方案 B：佐世保四翠 (商店街漫步)</h4>
-            <p>號稱日本最長的直線拱廊商店街，全平地，有遮雨棚。</p>
-            <ul>
-                <li><strong>適合：</strong> 隨意逛街、藥妝採購、體驗當地生活。</li>
-                <li><strong>交通：</strong> 從港口走路即可到達（約15分鐘），或搭計程車起跳價即達。</li>
-                <li><span class="tag-veg">素食推薦</span> 商店街內有許多咖啡廳 (如 Doutor, Tully's)，輕食較容易解決。</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h4>方案 C：展海峰展望台 (絕景但稍遠)</h4>
-            <p>眺望九十九島最美的地方。雖然需要搭車較遠，但風景無敵。</p>
-            <ul>
-                <li><strong>適合：</strong> 熱愛攝影與壯麗風景。</li>
-                <li><strong>注意：</strong> 下車後需走一小段坡路/階梯到展望台，請評估膝蓋狀況。</li>
-            </ul>
-             <table class="transport-table">
-                <tr>
-                    <th>項目</th>
-                    <th>計程車 (單程/一台車)</th>
-                    <th>公車</th>
-                </tr>
-                <tr>
-                    <td>車資預估</td>
-                    <td>約 ¥4,000 (較貴)</td>
-                    <td>班次極少，不建議</td>
-                </tr>
-                <tr>
-                    <td>步行疲勞度</td>
-                    <td>⭐⭐ (下車後需走)</td>
-                    <td>⭐⭐⭐⭐⭐</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- Day 5 Section -->
-    <div id="day5" class="section">
-        <div class="card">
-            <h3>Day 5：海上巡航 <span class="tag-easy">放鬆</span></h3>
-            <p>旅程的尾聲，享受設施並準備打包。</p>
-            <hr>
-            <h4>📝 今日任務：</h4>
-            <ol>
-                <li><strong>打包行李：</strong> 午餐後開始整理，通常需在午夜前將大件行李放在房門口托運。</li>
-                <li><strong>結清帳單：</strong> 建議使用信用卡綁定房卡，就不用去櫃台排隊結帳。</li>
-                <li><strong>巧克力咖啡廳 (Jean-Philippe)：</strong> 位於 6 樓，去喝杯世界冠軍巧克力大師的熱可可（需付費），犒賞自己。</li>
-                <li><strong>告別晚餐：</strong> 今晚主餐廳通常有船長之夜或特殊菜單。</li>
-            </ol>
-        </div>
-    </div>
-
-    <!-- Day 6 Section -->
-    <div id="day6" class="section">
-        <div class="card">
-            <h3>Day 6：抵達基隆 (06:00)</h3>
-            <p><strong>平安回家</strong></p>
-            <ul>
-                <li><strong>早餐：</strong> 自助餐廳 05:30 就開放了，建議早點吃。</li>
-                <li><strong>離船：</strong> 依照廣播指示分批下船。</li>
-                <li><strong>通關：</strong> 領取行李後，通過海關，直接搭計程車或接送車回家休息。</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Prep Section -->
-    <div id="prep" class="section">
-        <div class="card">
-            <h2>🎒 行李清單</h2>
-            <ul>
-                <li><strong>藥品：</strong> 高血壓藥、暈船藥 (船上有賣但貴)、常備腸胃藥、痠痛貼布。建議分裝在隨身包。</li>
-                <li><strong>保暖衣物：</strong> 船內冷氣強，甲板風大。請務必帶「防風薄外套」和「絲巾/圍巾」。</li>
-                <li><strong>鞋子：</strong> 請穿「止滑、好穿脫」的平底鞋或運動鞋。船很大，即便是少走路行程，一天也會走不少步。</li>
-                <li><strong>保溫瓶：</strong> 房間水不可生飲，可拿保溫瓶去自助餐廳裝熱水回房喝。</li>
-                <li><strong>牙刷牙膏：</strong> 郵輪響應環保，通常不提供一次性牙刷，請自備。</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>📱 網卡與通訊</h2>
-            <ul>
-                <li><strong>船上 Wi-Fi：</strong> 衛星網路非常貴且慢，若非必要，建議用「斷網排毒」的心情享受。</li>
-                <li><strong>日本網卡：</strong> 買一般日本漫遊卡即可（Day 3, 4 靠岸時可用）。船在公海時是收不到日本訊號的。</li>
-            </ul>
-        </div>
-
-        <div class="card" style="border-left-color: var(--success-color);">
-            <h2>🥬 素食溝通卡 (可截圖)</h2>
-            <div style="background:#f1f8e9; padding:15px; border-radius:8px; border:1px dashed #aaa;">
-                <p style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;">我是蛋奶素食者</p>
-                <p style="color:#555;">I am a Lacto-Ovo Vegetarian.</p>
-                <p style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;">我不吃肉和海鮮</p>
-                <p style="color:#555;">I do NOT eat meat, fish, or seafood.</p>
-                <p style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;">我可以吃雞蛋和牛奶</p>
-                <p style="color:#555;">I CAN eat eggs and dairy products.</p>
-            </div>
-            <p style="margin-top:10px; font-size:0.9rem;">*在日本餐廳或船上點餐時，可以直接出示此畫面給服務人員看。</p>
-        </div>
-    </div>
-
-</div>
-
-<footer>
-    <p>&copy; 2026 樂齡郵輪之旅 | Made with ❤️ for Family</p>
-    <br>
-    <br>
-    <br>
-</footer>
-
-<a href="#" class="back-to-top" onclick="window.scrollTo(0,0); return false;">↑</a>
-
-<script>
-    function showSection(sectionId) {
-        // 隱藏所有區塊
-        const sections = document.querySelectorAll('.section');
-        sections.forEach(section => {
-            section.classList.remove('active');
-        });
-
-        // 顯示選定區塊
-        const target = document.getElementById(sectionId);
-        if (target) {
-            target.classList.add('active');
+    <!-- JavaScript 互動功能 -->
+    <script>
+        // 手機版選單切換
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
         }
 
-        // 更新導航按鈕狀態
-        const buttons = document.querySelectorAll('.nav-btn');
-        buttons.forEach(btn => {
-            btn.classList.remove('active');
-            // 簡單判斷：若按鈕文字包含 ID 的關鍵字或 onclick 內容匹配 (此處採 onclick 匹配)
-            if (btn.getAttribute('onclick').includes(sectionId)) {
-                btn.classList.add('active');
+        // Tabs 切換邏輯
+        function openTab(evt, tabName) {
+            // 隱藏所有 tab 內容
+            const tabcontent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
-        });
 
-        // 自動捲動到頂部
-        window.scrollTo(0, 0);
-    }
-</script>
+            // 移除所有按鈕的 active 樣式 (改為白色背景)
+            const tablinks = document.getElementsByClassName("tab-links");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" bg-blue-600 text-white", " bg-white text-blue-800");
+            }
 
+            // 顯示當前選中的 tab，並加上 active 樣式
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className = evt.currentTarget.className.replace(" bg-white text-blue-800", " bg-blue-600 text-white");
+        }
+
+        // 顯示自訂 Toast 提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('opacity-0');
+            
+            // 3秒後消失
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        // 複製行程文字到剪貼簿
+        function copyItinerary() {
+            const textToCopy = `MSC榮耀號 6天5夜之旅 (福岡/佐世保)
+日期：2026/3/18 - 3/23
+
+【航線概覽】
+Day 1：基隆 18:00 出發
+Day 2：海上巡航
+Day 3：日本 福岡 (07:00-18:00)
+Day 4：日本 佐世保 (08:00-17:00)
+Day 5：海上巡航
+Day 6：基隆 06:00 抵達
+
+【岸上觀光景點庫 (當日彈性挑選)】
+📍 福岡推薦：太宰府天滿宮、LaLaport商場、大濠公園、博多運河城、福岡塔。
+📍 佐世保推薦：九十九島遊覽船、五番街、四町商店街、展海峰、豪斯登堡。
+(備註：全程建議以計程車代步，提升旅途舒適度)
+
+*記得上船前先預購WiFi與飲料套餐享優惠！`;
+
+            // 使用 navigator.clipboard API，如果失敗則退回傳統方法
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast('✅ 行程已成功複製，您可以貼上至 Line 群組分享囉！');
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(textToCopy);
+                });
+            } else {
+                fallbackCopyTextToClipboard(textToCopy);
+            }
+        }
+
+        // 複製文字的備用方法
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            // 避免滾動到下方
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) {
+                    showToast('✅ 行程已成功複製，您可以貼上至 Line 群組分享囉！');
+                } else {
+                    showToast('❌ 複製失敗，請手動選取文字複製。');
+                }
+            } catch (err) {
+                showToast('❌ 複製失敗，請手動選取文字複製。');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
 </body>
 </html>

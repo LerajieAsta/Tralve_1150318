@@ -81,6 +81,7 @@
         <div class="md:hidden hidden bg-blue-900" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#home" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">首頁</a>
+                <a href="#facilities" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">船上設施</a>
                 <a href="#expenses" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">船上消費</a>
                 <a href="#plans" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">景點推薦</a>
                 <a href="#notes" onclick="toggleMobileMenu()" class="hover:bg-blue-700 block px-3 py-3 rounded-md text-base font-medium">行前準備</a>
@@ -101,11 +102,7 @@
                     </span>
                     <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 mb-6">MSC榮耀號<br>福岡與佐世保6天5夜<br><span class="text-blue-600">郵輪放鬆行程</span></h1>
                     
-                    <div class="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
-                        <button onclick="copyItinerary()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition shadow-md flex items-center gap-2">
-                            <i class="fa-regular fa-copy"></i> 複製行程文字
-                        </button>
-                    </div>
+                    <p class="text-gray-600 text-lg mb-6">帶著家人一起享受最舒適的海上假期！免去每日整理行李的煩惱，盡情品嚐美食、欣賞國際大秀，輕鬆探索日本九州風情。</p>
                 </div>
 
                 <div class="space-y-6">
@@ -168,6 +165,58 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 新增：船上設施區塊 -->
+    <section id="facilities" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-blue-50 rounded-3xl mb-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-8 text-center"><i class="fa-solid fa-water mr-3"></i>探索 MSC 榮耀號船上設施</h2>
+        <p class="text-center text-xl text-gray-700 mb-10 max-w-3xl mx-auto">
+            17萬噸的海上巨無霸，就像一座會移動的豪華度假村。以下為您推薦幾個必訪亮點：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 設施 1 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border-t-4 border-blue-500 hover:-translate-y-1 transition duration-300">
+                <div class="text-blue-500 text-4xl mb-4 text-center"><i class="fa-solid fa-star"></i></div>
+                <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">榮耀大道 (Galleria Bellissima)</h3>
+                <p class="text-gray-600 text-center">長達 96 公尺的海上香榭大道！最吸睛的是頭頂的 <strong>LED 巨型天幕</strong>，每天會變換不同絕美圖案，大道兩旁滿是免稅店與特色餐廳，是全船最熱鬧的中心。</p>
+            </div>
+
+            <!-- 設施 2 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border-t-4 border-yellow-500 hover:-translate-y-1 transition duration-300">
+                <div class="text-yellow-500 text-4xl mb-4 text-center"><i class="fa-solid fa-masks-theater"></i></div>
+                <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">倫敦大劇院</h3>
+                <p class="text-gray-600 text-center">可容納近千人的豪華劇院。每晚都會上演不同主題的 <strong>百老匯等級原創大秀</strong>（歌舞、特技、魔術）。<br><span class="text-red-500 font-bold">記得每天早上08:00先用APP預約！</span></p>
+            </div>
+
+            <!-- 設施 3 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border-t-4 border-cyan-500 hover:-translate-y-1 transition duration-300">
+                <div class="text-cyan-500 text-4xl mb-4 text-center"><i class="fa-solid fa-swimming-pool"></i></div>
+                <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">亞利桑那水上樂園 & 泳池</h3>
+                <p class="text-gray-600 text-center">設有多個戶外/室內溫水泳池與 <strong>溫水按摩池(Jacuzzi)</strong>。想放鬆的長輩可以穿著泳裝，在甲板上一邊泡湯一邊欣賞無敵海景。</p>
+            </div>
+
+            <!-- 設施 4 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border-t-4 border-pink-500 hover:-translate-y-1 transition duration-300">
+                <div class="text-pink-500 text-4xl mb-4 text-center"><i class="fa-solid fa-utensils"></i></div>
+                <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">市集自助餐廳 & 主餐廳</h3>
+                <p class="text-gray-600 text-center"><strong>市集自助餐廳</strong> 每天開放將近20小時，隨時可去享用美食（手工披薩必吃！）；<strong>主餐廳</strong> 則提供優雅的單點式三道式晚餐，皆含在免費項目中。</p>
+            </div>
+
+            <!-- 設施 5 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border-t-4 border-green-500 hover:-translate-y-1 transition duration-300">
+                <div class="text-green-500 text-4xl mb-4 text-center"><i class="fa-brands fa-xbox"></i></div>
+                <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">F1模擬車 & 娛樂區 (自費)</h3>
+                <p class="text-gray-600 text-center">喜歡刺激的話，船上有 1:1 等比例的 <strong>F1 賽車模擬器</strong>、XD 互動影院以及保齡球館。這些屬於額外自費項目，適合年輕人體驗。</p>
+            </div>
+
+            <!-- 設施 6 -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border-t-4 border-indigo-500 hover:-translate-y-1 transition duration-300">
+                <div class="text-indigo-500 text-4xl mb-4 text-center"><i class="fa-solid fa-camera"></i></div>
+                <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">施華洛世奇水晶樓梯</h3>
+                <p class="text-gray-600 text-center">位於中庭的奢華樓梯，階梯內鑲嵌著滿滿的 <strong>施華洛世奇水晶</strong>，在燈光下閃閃發光，是全船最知名的網美打卡點，千萬別錯過！</p>
             </div>
         </div>
     </section>
@@ -419,71 +468,6 @@
             // 顯示當前選中的 tab，並加上 active 樣式
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className = evt.currentTarget.className.replace(" bg-white text-blue-800", " bg-blue-600 text-white");
-        }
-
-        // 顯示自訂 Toast 提示
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerText = message;
-            toast.classList.remove('opacity-0');
-            
-            // 3秒後消失
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-            }, 3000);
-        }
-
-        // 複製行程文字到剪貼簿
-        function copyItinerary() {
-            const textToCopy = `MSC榮耀號 6天5夜之旅 (福岡/佐世保)
-日期：2026/3/18 - 3/23
-
-【完整時間表】
-Day 1：3/18(三) 13:00 基隆西岸旅客中心集合 → 18:00啟航
-Day 2：3/19(四) 海上巡航 (🌟記得早上08:00用APP搶免費劇場)
-Day 3：3/20(五) 福岡 (09:00叫Uber出發太宰府天滿宮)
-Day 4：3/21(六) 佐世保 (09:30叫Uber出發九十九島搭船)
-Day 5：3/22(日) 海上巡航
-Day 6：3/23(一) 06:00 抵達基隆
-
-(備註：日本岸上全程使用 Uber 叫車，免找零免溝通，長輩最舒適)
-
-*重要提醒：登船請務必帶齊藥品、自備牙膏牙刷，網路分開買(船上WiFi+日本漫遊)，大行李切勿放行動電源與藥品！`;
-
-            // 使用 navigator.clipboard API，如果失敗則退回傳統方法
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    showToast('✅ 行程與重點提醒已成功複製！');
-                }).catch(err => {
-                    fallbackCopyTextToClipboard(textToCopy);
-                });
-            } else {
-                fallbackCopyTextToClipboard(textToCopy);
-            }
-        }
-
-        // 複製文字的備用方法
-        function fallbackCopyTextToClipboard(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            // 避免滾動到下方
-            textArea.style.top = "0";
-            textArea.style.left = "0";
-            textArea.style.position = "fixed";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if(successful) {
-                    showToast('✅ 行程與重點提醒已成功複製！');
-                } else {
-                    showToast('❌ 複製失敗，請手手動選取文字複製。');
-                }
-            } catch (err) {
-                showToast('❌ 複製失敗，請手動選取文字複製。');
-            }
-            document.body.removeChild(textArea);
         }
     </script>
 </body>
